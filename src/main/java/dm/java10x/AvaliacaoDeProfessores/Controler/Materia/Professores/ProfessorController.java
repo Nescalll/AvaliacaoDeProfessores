@@ -1,4 +1,4 @@
-package dm.java10x.AvaliacaoDeProfessores.Professores;
+package dm.java10x.AvaliacaoDeProfessores.Controler.Materia.Professores;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
