@@ -1,5 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.model;
 
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "tb_aula")
 public class AulaModel {
 
-    private Enum adjetivo;
+    private Adjetivo adjetivo;
 
     private int nota;
 
@@ -20,8 +21,33 @@ public class AulaModel {
 
     public void AulaModel() { }
 
-    public void AulaModel(Enum adjetivo, int nota, LocalDateTime data){
-
+    public void AulaModel(Adjetivo adjetivo, int nota, LocalDateTime data){
+        this.adjetivo = adjetivo;
+        this.nota = nota;
+        this.data = data;
     }
 
+    public Adjetivo getAdjetivo() {
+        return adjetivo;
+    }
+
+    public void setAdjetivo(Adjetivo adjetivo) {
+        this.adjetivo = adjetivo;
+    }
+
+    public int getNota() {
+        return nota;
+    }
+
+    public void setNota(int nota) {
+        this.nota = nota;
+    }
+
+    public LocalDateTime getData() {
+        return data;
+    }
+
+    public void setData(LocalDateTime data) {
+        this.data = data;
+    }
 }
