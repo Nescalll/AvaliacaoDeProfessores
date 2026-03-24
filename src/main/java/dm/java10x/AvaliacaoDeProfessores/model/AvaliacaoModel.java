@@ -20,5 +20,5 @@ public class AvaliacaoModel {
 
     @ManyToOne
     @JoinColumn(name = "aulaId")
-    private long idAula;
+    private AulaModel idAula;
 }
