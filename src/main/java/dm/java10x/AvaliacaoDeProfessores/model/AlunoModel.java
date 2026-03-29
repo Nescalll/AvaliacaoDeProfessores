@@ -33,7 +33,7 @@ public class AlunoModel {
         return nome;
     }
 
-    public void setNota(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
@@ -59,5 +59,13 @@ public class AlunoModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -26,9 +26,10 @@ public class ProfessorModel {
 
     private Turma turma;
 
-    public ProfessorModel() {}
+    public ProfessorModel() {
+    }
 
-    public ProfessorModel(String nome, Materia materia,String senha, Turma turma) {
+    public ProfessorModel(String nome, Materia materia, String senha, Turma turma) {
         this.nome = nome;
         this.materia = materia;
         this.senha = senha;
@@ -57,5 +58,29 @@ public class ProfessorModel {
 
     public void setTurma(Turma turma) {
         this.turma = turma;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

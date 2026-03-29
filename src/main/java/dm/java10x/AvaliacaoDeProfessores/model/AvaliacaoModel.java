@@ -21,4 +21,18 @@ public class AvaliacaoModel {
     @ManyToOne
     @JoinColumn(name = "aulaId")
     private AulaModel idAula;
+
+    public AvaliacaoModel(){}
+
+    public AvaliacaoModel(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
