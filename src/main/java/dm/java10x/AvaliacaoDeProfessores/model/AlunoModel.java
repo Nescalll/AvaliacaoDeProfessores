@@ -1,5 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.model;
 
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class AlunoModel {
 
     private  String nome;
 
-    private Enum turma;
+    private Turma turma;
 
     private String senha;
 
@@ -22,7 +23,7 @@ public class AlunoModel {
 
     public void AlunoModel(){}
 
-    public void AlunoModel(String nome, Enum turma, String senha, String email){
+    public void AlunoModel(String nome, Turma turma, String senha, String email){
         this.nome = nome;
         this.turma = turma;
         this.senha = senha;
@@ -37,11 +38,11 @@ public class AlunoModel {
         this.nome = nome;
     }
 
-    public Enum getTurma() {
+    public Turma getTurma() {
         return turma;
     }
 
-    public void setTurma(Enum turma) {
+    public void setTurma(Turma turma) {
         this.turma = turma;
     }
 
