@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -13,6 +15,10 @@ public class ProfessorService {
 
     @Autowired
     private ProfessorRepository professorRepository;
+
+    public List<ProfessorModel> findAll(){
+        return professorRepository.findAll();
+    }
 
     public ProfessorModel findById(long id){
         Optional<ProfessorModel> professorModel = this.professorRepository.findById(id);
@@ -22,7 +28,7 @@ public class ProfessorService {
     }
 
     @Transactional
-    public ProfessorModel creat(ProfessorModel obj){
+    public ProfessorModel create(ProfessorModel obj){
         obj = this.professorRepository.save(obj);
         return obj;
     }
@@ -30,7 +36,11 @@ public class ProfessorService {
     @Transactional
     public ProfessorModel update(ProfessorModel obj){
         ProfessorModel newProfessor = findById(obj.getId());
-        newProfessor.setSenha(obj.getSenha());
+        if(Objects.nonNull(obj.getSenha())){newProfessor.setSenha(obj.getSenha());}
+        if (Objects.nonNull(obj.getEmail())){newProfessor.setEmail(obj.getEmail());}
+        if (Objects.nonNull(obj.getTurma())){newProfessor.setTurma(obj.getTurma());}
+        if (Objects.nonNull(obj.getMateria())){newProfessor.setMateria(obj.getMateria());}
+        if (Objects.nonNull(obj.getNome())){newProfessor.setNome(obj.getNome());}
         return this.professorRepository.save(newProfessor);
     }
 

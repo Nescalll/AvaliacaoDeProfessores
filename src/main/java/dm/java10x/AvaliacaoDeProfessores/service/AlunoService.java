@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -13,6 +15,11 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
+
+    public List<AlunoModel> findAll() {
+        return this.alunoRepository.findAll();
+    }
+
 
     public AlunoModel findById(Long id){
         Optional<AlunoModel> alunoModel = this.alunoRepository.findById(id);
@@ -22,7 +29,7 @@ public class AlunoService {
     }
 
     @Transactional
-    public AlunoModel creat(AlunoModel obj){
+    public AlunoModel create(AlunoModel obj){
         obj = this.alunoRepository.save(obj);
         return obj;
     }
@@ -30,7 +37,10 @@ public class AlunoService {
     @Transactional
     public AlunoModel update(AlunoModel obj){
         AlunoModel newObj = findById(obj.getId());
-        newObj.setSenha(obj.getSenha());
+        if(Objects.nonNull(obj.getNome())){newObj.setNome(obj.getNome());}
+        if(Objects.nonNull(obj.getEmail())){newObj.setEmail(obj.getEmail());}
+        if(Objects.nonNull(obj.getSenha())){newObj.setSenha(obj.getSenha());}
+        if(Objects.nonNull(obj.getTurma())){newObj.setTurma(obj.getTurma());}
         return this.alunoRepository.save(newObj);
     }
 

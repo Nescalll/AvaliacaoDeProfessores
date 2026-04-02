@@ -1,11 +1,14 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
+import dm.java10x.AvaliacaoDeProfessores.model.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.AulaModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AulaRepository;
+import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,6 +16,13 @@ public class AulaService {
 
     @Autowired
     private AulaRepository aulaRepository;
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
+
+    public List<AulaModel> findAll(long id){
+        return aulaRepository.findAll();
+    }
 
     public AulaModel findById(long id){
         Optional<AulaModel> aulaModel = this.aulaRepository.findById(id);
