@@ -12,20 +12,23 @@ public class AvaliacaoModel {
 
     @ManyToOne
     @JoinColumn(name = "professorId")
-    private ProfessorModel professor;
+    private ProfessorModel professorModel;
 
     @ManyToOne
     @JoinColumn(name = "alunoId")
-    private AlunoModel aluno;
+    private AlunoModel alunoModel;
 
     @ManyToOne
     @JoinColumn(name = "aulaId")
-    private AulaModel idAula;
+    private AulaModel aulaModel;
 
     public AvaliacaoModel(){}
 
-    public AvaliacaoModel(long id) {
+    public AvaliacaoModel(long id, AlunoModel alunoModel, ProfessorModel professorModel, AulaModel aulaModel) {
         this.id = id;
+        this.alunoModel = alunoModel;
+        this.aulaModel = aulaModel;
+        this.professorModel = professorModel;
     }
 
     public long getId() {
@@ -34,5 +37,29 @@ public class AvaliacaoModel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public ProfessorModel getProfessorModel() {
+        return professorModel;
+    }
+
+    public void setProfessorModel(ProfessorModel professorModel) {
+        this.professorModel = professorModel;
+    }
+
+    public AlunoModel getAlunoModel() {
+        return alunoModel;
+    }
+
+    public void setAlunoModel(AlunoModel alunoModel) {
+        this.alunoModel = alunoModel;
+    }
+
+    public AulaModel getAulaModel() {
+        return aulaModel;
+    }
+
+    public void setAulaModel(AulaModel aulaModel) {
+        this.aulaModel = aulaModel;
     }
 }

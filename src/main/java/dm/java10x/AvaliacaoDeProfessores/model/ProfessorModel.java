@@ -5,6 +5,8 @@ import dm.java10x.AvaliacaoDeProfessores.enumeradores.Materia;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_professor")
 public class ProfessorModel {
@@ -12,6 +14,7 @@ public class ProfessorModel {
     @Column(nullable = false)
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     private Materia materia;
 
     @Id
@@ -24,6 +27,7 @@ public class ProfessorModel {
     @Column(nullable = false)
     private String senha;
 
+    @Enumerated(EnumType.STRING)
     private Turma turma;
 
     public ProfessorModel() {
@@ -36,7 +40,7 @@ public class ProfessorModel {
         this.turma = turma;
     }
 
-    public Enum getMateria() {
+    public Materia getMateria() {
         return materia;
     }
 

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "tb_aula")
 public class AulaModel {
 
+    @Enumerated(EnumType.STRING)
     private Adjetivo adjetivo;
 
     private int nota;
@@ -19,9 +20,9 @@ public class AulaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public void AulaModel() { }
+    public AulaModel() { }
 
-    public void AulaModel(Adjetivo adjetivo, int nota, LocalDateTime data){
+    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime data){
         this.adjetivo = adjetivo;
         this.nota = nota;
         this.data = data;

@@ -15,15 +15,16 @@ public class AlunoModel {
 
     private  String nome;
 
+    @Enumerated(EnumType.STRING)
     private Turma turma;
 
     private String senha;
 
     private String email;
 
-    public void AlunoModel(){}
+    public AlunoModel(){}
 
-    public void AlunoModel(String nome, Turma turma, String senha, String email){
+    public AlunoModel(String nome, Turma turma, String senha, String email){
         this.nome = nome;
         this.turma = turma;
         this.senha = senha;
