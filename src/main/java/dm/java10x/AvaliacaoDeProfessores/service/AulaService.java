@@ -21,6 +21,17 @@ public class AulaService {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
+    public void deletarAulasVencidas(){
+        List<AulaModel> aulas = findAll();
+        LocalDateTime dataAtual = LocalDateTime.now();
+
+        for (AulaModel aula : aulas){
+            if (aula.getDataDeInspiracao().isBefore(dataAtual)){
+                delete(aula.getId());
+            }
+        }
+    }
+
     public List<AulaModel> findAll(){
         return aulaRepository.findAll();
     }

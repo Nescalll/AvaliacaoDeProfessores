@@ -24,12 +24,14 @@ public class AulaControler {
 
     @GetMapping
     public ResponseEntity<List<AulaModel>> listarTodos() {
+        aulaService.deletarAulasVencidas();
         List<AulaModel> aulaModels = aulaService.findAll();
         return ResponseEntity.ok(aulaModels);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AulaModel> buscarPorId(@PathVariable Long id) {
+        aulaService.deletarAulasVencidas();
         AulaModel aulaModel= aulaService.findById(id);
         return ResponseEntity.ok(aulaModel);
     }
