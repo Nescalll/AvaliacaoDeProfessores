@@ -1,6 +1,7 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
 import dm.java10x.AvaliacaoDeProfessores.model.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ProfessorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import java.util.Optional;
 
 @Service
 public class ProfessorService {
+
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
 
     @Autowired
     private ProfessorRepository professorRepository;
@@ -46,8 +50,9 @@ public class ProfessorService {
 
     @Transactional
     public void delete(long id){
-        findById(id);
+        ProfessorModel professor = findById(id);
         try {
+            this.avaliacaoRepository.deleteByProfessorModel(professor);
             this.professorRepository.deleteById(id);
         } catch (Exception e){
             throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas");

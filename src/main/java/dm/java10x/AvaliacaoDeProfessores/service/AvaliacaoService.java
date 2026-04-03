@@ -2,6 +2,7 @@ package dm.java10x.AvaliacaoDeProfessores.service;
 
 import dm.java10x.AvaliacaoDeProfessores.model.AulaModel;
 import dm.java10x.AvaliacaoDeProfessores.model.AvaliacaoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,5 @@ public class AvaliacaoService {
         obj.setProfessorModel(professorService.findById(id_professor));
         obj = this.avaliacaoRepository.save(obj);
         return obj;
-    }
-
-    @Transactional
-    public void deleteByAula(AulaModel aula){
-        avaliacaoRepository.deleteByAulaModel(aula);
     }
 }
