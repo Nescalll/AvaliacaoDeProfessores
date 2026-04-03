@@ -23,6 +23,12 @@ public class ProfessorControler {
         return ResponseEntity.ok(professor);
     }
 
+    @GetMapping("/media/{id}")
+    public ResponseEntity<Integer> buscarMediaPorId(@PathVariable long id){
+        Integer media = professorService.mediaDoProfessorPorId(id);
+        return ResponseEntity.ok(media);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProfessorModel> buscarPorId(@PathVariable Long id) {
         ProfessorModel professor = professorService.findById(id);

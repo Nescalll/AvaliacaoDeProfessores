@@ -1,6 +1,8 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
+import dm.java10x.AvaliacaoDeProfessores.model.AvaliacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.repository.AulaRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ProfessorRepository;
 import jakarta.transaction.Transactional;
@@ -19,6 +21,9 @@ public class ProfessorService {
 
     @Autowired
     private ProfessorRepository professorRepository;
+
+    @Autowired
+    private AulaRepository aulaRepository;
 
     public List<ProfessorModel> findAll(){
         return professorRepository.findAll();
@@ -57,5 +62,18 @@ public class ProfessorService {
         } catch (Exception e){
             throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas");
         }
+    }
+
+    public Integer mediaDoProfessorPorId(long id){
+        ProfessorModel professor = findById(id);
+        int cont = 0;
+        int soma = 0;
+        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
+        for (AvaliacaoModel avaliacao: avaliacoes){
+            soma += avaliacao.getAulaModel().getNota();
+            cont ++;
+        }
+        if (cont > 0){return soma/cont;}
+        else{ return 0;}
     }
 }
