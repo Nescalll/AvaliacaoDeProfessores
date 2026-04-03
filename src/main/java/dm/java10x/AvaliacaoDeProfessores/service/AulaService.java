@@ -42,8 +42,9 @@ public class AulaService {
 
     @Transactional
     public void delete(long id){
-        findById(id);
+        AulaModel obj = findById(id);
         try {
+            this.avaliacaoRepository.deleteByAulaModel(obj);
             this.aulaRepository.deleteById(id);
         } catch (Exception e){
             throw new RuntimeException("Não é possivel excluir pois há entidades relacionadas");
