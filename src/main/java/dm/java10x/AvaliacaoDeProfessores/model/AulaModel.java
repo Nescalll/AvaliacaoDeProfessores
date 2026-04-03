@@ -14,7 +14,9 @@ public class AulaModel {
 
     private int nota;
 
-    private LocalDateTime data;
+    private LocalDateTime dataDeCriacao;
+
+    private LocalDateTime dataDeInspiracao;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +24,11 @@ public class AulaModel {
 
     public AulaModel() { }
 
-    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime data){
+    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao){
         this.adjetivo = adjetivo;
         this.nota = nota;
-        this.data = data;
+        this.dataDeCriacao = dataDeCriacao;
+        this.dataDeInspiracao = dataDeInspiracao;
     }
 
     public Adjetivo getAdjetivo() {
@@ -44,12 +47,12 @@ public class AulaModel {
         this.nota = nota;
     }
 
-    public LocalDateTime getData() {
-        return data;
+    public LocalDateTime getDataDeCriacao() {
+        return dataDeCriacao;
     }
 
-    public void setData(LocalDateTime data) {
-        this.data = data;
+    public void setDataDeCriacao(LocalDateTime dataDeCriacao) {
+        this.dataDeCriacao = dataDeCriacao;
     }
 
     public long getId() {
@@ -58,5 +61,13 @@ public class AulaModel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public LocalDateTime getDataDeInspiracao() {
+        return dataDeInspiracao;
+    }
+
+    public void setDataDeInspiracao(LocalDateTime dataDeInspiracao) {
+        this.dataDeInspiracao = dataDeInspiracao;
     }
 }
