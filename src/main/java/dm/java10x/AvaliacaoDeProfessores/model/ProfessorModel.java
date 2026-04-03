@@ -27,13 +27,18 @@ public class ProfessorModel {
     @Column(nullable = false)
     private String senha;
 
-    @Enumerated(EnumType.STRING)
-    private Turma turma;
+    @ElementCollection
+    @CollectionTable(
+            name = "professor_turmas",
+            joinColumns = @JoinColumn(name = "professor_id")
+    )
+    @Column(name = "turma")
+    private List<String> turma;
 
     public ProfessorModel() {
     }
 
-    public ProfessorModel(String nome, Materia materia, String senha, Turma turma) {
+    public ProfessorModel(String nome, Materia materia, String senha, List<String> turma) {
         this.nome = nome;
         this.materia = materia;
         this.senha = senha;
@@ -56,11 +61,11 @@ public class ProfessorModel {
         this.nome = nome;
     }
 
-    public Turma getTurma() {
+    public List<String> getTurma() {
         return turma;
     }
 
-    public void setTurma(Turma turma) {
+    public void setTurma(List<String> turma) {
         this.turma = turma;
     }
 
