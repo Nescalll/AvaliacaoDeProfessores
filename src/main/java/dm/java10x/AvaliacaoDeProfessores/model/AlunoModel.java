@@ -11,15 +11,20 @@ public class AlunoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(name = "nome", nullable = false)
     private  String nome;
 
+    @Column(name = "turma", nullable = false)
     @Enumerated(EnumType.STRING)
     private Turma turma;
 
+    @Column(name = "senha", nullable = false)
     private String senha;
 
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     public AlunoModel(){}

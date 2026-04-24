@@ -10,16 +10,21 @@ import java.time.LocalDateTime;
 public class AulaModel {
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "adjetivo", nullable = false)
     private Adjetivo adjetivo;
 
+    @Column(name = "nota", nullable = false)
     private int nota;
 
+    @Column(name = "dataDeCriacao", nullable = false)
     private LocalDateTime dataDeCriacao;
 
+    @Column(name = "dataDeInspiracao", nullable = false)
     private LocalDateTime dataDeInspiracao;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private long id;
 
     public AulaModel() { }
