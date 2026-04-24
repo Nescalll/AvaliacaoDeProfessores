@@ -21,10 +21,10 @@ public class ProfessorModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, name = "email")
     private String email;
 
-    @Column(nullable = false)
+    @Column(name ="senha" ,nullable = false)
     private String senha;
 
     @ElementCollection
@@ -32,7 +32,7 @@ public class ProfessorModel {
             name = "professor_turmas",
             joinColumns = @JoinColumn(name = "professor_id")
     )
-    @Column(name = "turma")
+    @Column(name = "turma", nullable = false)
     private List<String> turma;
 
     public ProfessorModel() {
