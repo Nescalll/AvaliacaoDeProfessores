@@ -1,6 +1,7 @@
 package dm.java10x.AvaliacaoDeProfessores.model;
 
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,10 @@ public class AulaModel {
     @Column(name = "nota", nullable = false)
     private int nota;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "melhorias", nullable = false)
+    private Melhorias[] melhorias = new Melhorias[3];
+
     @Column(name = "dataDeCriacao", nullable = false)
     private LocalDateTime dataDeCriacao;
 
@@ -27,13 +32,16 @@ public class AulaModel {
     @Column(name = "id", nullable = false)
     private long id;
 
-    public AulaModel() { }
+    public AulaModel() {
+    }
 
-    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao){
+    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao, Melhorias[] melhorias) {
         this.adjetivo = adjetivo;
         this.nota = nota;
         this.dataDeCriacao = dataDeCriacao;
         this.dataDeInspiracao = dataDeInspiracao;
+        this.melhorias = melhorias;
+
     }
 
     public Adjetivo getAdjetivo() {
@@ -75,4 +83,8 @@ public class AulaModel {
     public void setDataDeInspiracao(LocalDateTime dataDeInspiracao) {
         this.dataDeInspiracao = dataDeInspiracao;
     }
+
+    public Melhorias[] getMelhorias() {return melhorias;}
+
+    public void setMelhorias(Melhorias[] melhorias){this.melhorias = melhorias;}
 }
