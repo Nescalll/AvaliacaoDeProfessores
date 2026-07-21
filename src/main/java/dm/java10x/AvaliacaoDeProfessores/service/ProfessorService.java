@@ -59,7 +59,7 @@ public class ProfessorService {
     }
 
     @Transactional
-    public ProfessorModel create(ProfessorModel obj, List<Turma> turmas, MultipartFile file){
+    public ProfessorModel create(ProfessorModel obj, List<Turma> turmas, Optional<MultipartFile> file){
         obj = this.professorRepository.save(obj);
         for (Turma t: turmas){
             TurmaModel novaTurma = new TurmaModel(t, obj);
