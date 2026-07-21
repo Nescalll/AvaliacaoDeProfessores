@@ -26,7 +26,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        // Ignora todas as rotas públicas de autenticação e registro
         return path.startsWith("/auth/login") || path.startsWith("/auth/register");
     }
 
