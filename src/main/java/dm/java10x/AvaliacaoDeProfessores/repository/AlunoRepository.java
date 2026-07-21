@@ -1,6 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.repository;
 
-import dm.java10x.AvaliacaoDeProfessores.model.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;

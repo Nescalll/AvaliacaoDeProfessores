@@ -1,6 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.repository;
 
-import dm.java10x.AvaliacaoDeProfessores.model.AulaModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
