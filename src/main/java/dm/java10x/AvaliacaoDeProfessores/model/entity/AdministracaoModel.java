@@ -22,8 +22,9 @@ public class AdministracaoModel implements UserDetails {
     @Column(name = "login")
     private String login;
 
+    public AdministracaoModel(){}
 
-    AdministracaoModel(String senha, String login){
+    public AdministracaoModel(String senha, String login){
     this.login = login;
     this.senha = senha;
     }
