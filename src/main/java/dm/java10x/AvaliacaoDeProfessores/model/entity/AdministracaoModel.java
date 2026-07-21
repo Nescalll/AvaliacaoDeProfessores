@@ -1,4 +1,4 @@
-package dm.java10x.AvaliacaoDeProfessores.model;
+package dm.java10x.AvaliacaoDeProfessores.model.entity;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;

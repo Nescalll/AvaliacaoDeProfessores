@@ -1,4 +1,4 @@
-package dm.java10x.AvaliacaoDeProfessores.model;
+package dm.java10x.AvaliacaoDeProfessores.model.entity;
 
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;

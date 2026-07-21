@@ -1,6 +1,9 @@
-package dm.java10x.AvaliacaoDeProfessores.model;
+package dm.java10x.AvaliacaoDeProfessores.model.abstracte;
 
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import jakarta.persistence.*;
 
 @Entity

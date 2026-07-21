@@ -1,6 +1,7 @@
-package dm.java10x.AvaliacaoDeProfessores.model;
+package dm.java10x.AvaliacaoDeProfessores.model.entity;
 
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
+
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Materia;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,34 +11,41 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_aluno")
-public class AlunoModel implements UserDetails {
+@Table(name = "tb_professor")
+public class ProfessorModel implements UserDetails {
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Enumerated(EnumType.STRING)
+    private Materia materia;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "nome", nullable = false)
-    private  String nome;
-
-    @Column(name = "turma", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Turma turma;
-
-    @Column(name = "senha", nullable = false)
-    private String senha;
-
-    @Column(name = "email", unique = true, nullable = false)
+    @Column(unique = true, nullable = false, name = "email")
     private String email;
 
-    public AlunoModel(){}
+    @Column(name ="senha" ,nullable = false)
+    private String senha;
 
-    public AlunoModel(String nome, Turma turma, String senha, String email){
+    public ProfessorModel() {
+    }
+
+    public ProfessorModel(String nome, Materia materia, String senha, String email) {
         this.nome = nome;
-        this.turma = turma;
+        this.materia = materia;
         this.senha = senha;
         this.email = email;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
     }
 
     public String getNome() {
@@ -48,20 +56,12 @@ public class AlunoModel implements UserDetails {
         this.nome = nome;
     }
 
-    public Turma getTurma() {
-        return turma;
+    public long getId() {
+        return id;
     }
 
-    public void setTurma(Turma turma) {
-        this.turma = turma;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -72,17 +72,17 @@ public class AlunoModel implements UserDetails {
         this.email = email;
     }
 
-    public long getId() {
-        return id;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("aluno"));
+        return List.of(new SimpleGrantedAuthority("professor"));
     }
 
     @Override
