@@ -2,7 +2,8 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.*;
 import dm.java10x.AvaliacaoDeProfessores.infra.security.TokenService;
-import dm.java10x.AvaliacaoDeProfessores.model.*;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.TurmaRepository;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
 import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
@@ -14,9 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
