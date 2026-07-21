@@ -1,9 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
-import dm.java10x.AvaliacaoDeProfessores.model.AulaModel;
-import dm.java10x.AvaliacaoDeProfessores.model.AvaliacaoModel;
-import dm.java10x.AvaliacaoDeProfessores.model.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.AvaliacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ProfessorRepository;
 import jakarta.transaction.Transactional;
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AvaliacaoService {
