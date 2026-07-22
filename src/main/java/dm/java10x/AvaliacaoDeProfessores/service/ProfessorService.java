@@ -109,32 +109,28 @@ public class ProfessorService {
         else{ return 0;}
     }
 
-    public Adjetivo modaDosAdjetivos(long id){
+    public Map<Adjetivo, Integer> adjetivos(long id){
         ProfessorModel professor = findById(id);
+        Map<Adjetivo, Integer> adjMap = new HashMap<>();
+        adjMap.put(Adjetivo.OTIMO, 0);
+        adjMap.put(Adjetivo.BOM, 0);
+        adjMap.put(Adjetivo.MEDIO, 0);
+        adjMap.put(Adjetivo.RUIM, 0);
         Adjetivo[] adjetivos = {Adjetivo.OTIMO, Adjetivo.BOM, Adjetivo.MEDIO, Adjetivo.RUIM};
-        Integer[] quantAdjetivos = {0, 0, 0, 0};
         List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
         for (AvaliacaoModel avaliacao: avaliacoes){
             if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[0])){
-                quantAdjetivos[0] ++;
+                adjMap.compute(Adjetivo.OTIMO, (key, value) ->  value + 1);
             }
             else if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[1])){
-                quantAdjetivos[1] ++;
+                adjMap.compute(Adjetivo.BOM, (key, value) ->  value + 1);
             }
             else if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[2])){
-                quantAdjetivos[2] ++;
+                adjMap.compute(Adjetivo.MEDIO, (key, value) ->  value + 1);
             }
-            else {quantAdjetivos[3] ++;}
+            else {adjMap.compute(Adjetivo.PESSIMO, (key, value) ->  value + 1);}
         }
-        int max = 0;
-        int adj = 0;
-        for (int i = 0; i < 4; i++) {
-            if (quantAdjetivos[i] > max){
-                max = quantAdjetivos[i];
-                adj = i;
-            }
-        }
-        return adjetivos[adj];
+        return adjMap;
     }
     public List<ProfessorModel> filtrarPorTurma(Turma turma){
         List<TurmaModel> turmas = turmaRepository.findTurmaModelByTurma(turma);

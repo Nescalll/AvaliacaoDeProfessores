@@ -52,9 +52,9 @@ public class ProfessorControler {
     }
 
     @GetMapping("/adjetivo/{id}")
-    public ResponseEntity<Adjetivo> buscarAdjetivoPorId(@PathVariable Long id){
+    public ResponseEntity<?> buscarAdjetivoPorId(@PathVariable Long id){
         aulaService.deletarAulasVencidas();
-        Adjetivo adjetivo = professorService.modaDosAdjetivos(id);
+        Map<Adjetivo, Integer> adjetivo = professorService.adjetivos(id);
         return ResponseEntity.ok(adjetivo);
     }
 }
