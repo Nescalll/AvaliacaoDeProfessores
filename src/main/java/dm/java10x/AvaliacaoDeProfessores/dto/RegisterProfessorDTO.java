@@ -2,10 +2,10 @@ package dm.java10x.AvaliacaoDeProfessores.dto;
 
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Materia;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
-import dm.java10x.AvaliacaoDeProfessores.model.TurmaModel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public record RegisterProfessorDTO(
         String nome,
@@ -13,6 +13,6 @@ public record RegisterProfessorDTO(
         String senha,
         String email,
         List<Turma> turmas,
-        MultipartFile file
+        Optional<MultipartFile> file
 ) {
 }

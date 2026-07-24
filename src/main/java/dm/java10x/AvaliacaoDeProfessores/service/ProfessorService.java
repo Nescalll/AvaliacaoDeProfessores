@@ -2,8 +2,13 @@ package dm.java10x.AvaliacaoDeProfessores.service;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
-import dm.java10x.AvaliacaoDeProfessores.model.*;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.AvaliacaoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.TurmaModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ImageRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ProfessorRepository;
@@ -16,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfessorService {
@@ -55,7 +61,7 @@ public class ProfessorService {
     }
 
     @Transactional
-    public ProfessorModel create(ProfessorModel obj, List<Turma> turmas, MultipartFile file){
+    public ProfessorModel create(ProfessorModel obj, List<Turma> turmas, Optional<MultipartFile> file){
         obj = this.professorRepository.save(obj);
         for (Turma t: turmas){
             TurmaModel novaTurma = new TurmaModel(t, obj);
@@ -105,32 +111,45 @@ public class ProfessorService {
         else{ return 0;}
     }
 
-    public Adjetivo modaDosAdjetivos(long id){
+    public Map<Adjetivo, Integer> adjetivos(long id){
         ProfessorModel professor = findById(id);
+        Map<Adjetivo, Integer> adjMap = new HashMap<>();
+        adjMap.put(Adjetivo.OTIMO, 0);
+        adjMap.put(Adjetivo.BOM, 0);
+        adjMap.put(Adjetivo.MEDIO, 0);
+        adjMap.put(Adjetivo.RUIM, 0);
         Adjetivo[] adjetivos = {Adjetivo.OTIMO, Adjetivo.BOM, Adjetivo.MEDIO, Adjetivo.RUIM};
-        Integer[] quantAdjetivos = {0, 0, 0, 0};
         List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
         for (AvaliacaoModel avaliacao: avaliacoes){
             if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[0])){
-                quantAdjetivos[0] ++;
+                adjMap.compute(Adjetivo.OTIMO, (key, value) ->  value + 1);
             }
             else if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[1])){
-                quantAdjetivos[1] ++;
+                adjMap.compute(Adjetivo.BOM, (key, value) ->  value + 1);
             }
             else if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[2])){
-                quantAdjetivos[2] ++;
+                adjMap.compute(Adjetivo.MEDIO, (key, value) ->  value + 1);
             }
-            else {quantAdjetivos[3] ++;}
+            else {adjMap.compute(Adjetivo.PESSIMO, (key, value) ->  value + 1);}
         }
-        int max = 0;
-        int adj = 0;
-        for (int i = 0; i < 4; i++) {
-            if (quantAdjetivos[i] > max){
-                max = quantAdjetivos[i];
-                adj = i;
+        return adjMap;
+    }
+
+    public List<Melhorias> melhorias(Long id){
+        Map<Melhorias, Integer> mapaDeMelhorias = new HashMap<>();
+        ProfessorModel professor = professorRepository.findProfessorModelById(id);
+        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
+        for (AvaliacaoModel avaliacao: avaliacoes){
+            for (Melhorias melhoria: avaliacao.getAulaModel().getMelhorias()){
+                if (mapaDeMelhorias.containsKey(melhoria)){
+                    mapaDeMelhorias.compute(melhoria, (key, value) -> value ++);
+                } else {
+                    mapaDeMelhorias.put(melhoria,0);
+                }
             }
         }
-        return adjetivos[adj];
+        List<Melhorias> melhoriasMaisListadas = new ArrayList<>();
+        return  melhoriasMaisListadas;
     }
     public List<ProfessorModel> filtrarPorTurma(Turma turma){
         List<TurmaModel> turmas = turmaRepository.findTurmaModelByTurma(turma);

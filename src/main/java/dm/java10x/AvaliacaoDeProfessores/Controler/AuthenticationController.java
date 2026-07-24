@@ -2,8 +2,11 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.*;
 import dm.java10x.AvaliacaoDeProfessores.infra.security.TokenService;
-import dm.java10x.AvaliacaoDeProfessores.model.*;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.TurmaRepository;
+import dm.java10x.AvaliacaoDeProfessores.service.AdministracaoService;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
 import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -34,6 +34,10 @@ public class AuthenticationController {
 
     @Autowired
     private ProfessorService professorService;
+
+    @Autowired
+    private AdministracaoService administracaoService;
+
 
     @Autowired
     private TokenService tokenService;
@@ -86,9 +90,32 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/login/adm")
+    public ResponseEntity loginAdm(@RequestBody AuthenticationDTO data){
+        try {
+            System.out.println("Adm recebido");
+            var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
+            System.out.println("Configurar authentificação");
+            Authentication auth = this.authenticationManager.authenticate(usernamePassword);
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+
+            if (!(userDetails instanceof AdministracaoModel)) {
+                return ResponseEntity.badRequest().body("Usuário não é um adm");
+            }
+
+            String token = tokenService.generateToken(userDetails);
+            AdministracaoModel adm = (AdministracaoModel) userDetails;
+
+            return ResponseEntity.ok(new LoginResponseDTO(
+                    token));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro no login: " + e.getMessage());
+        }
+    }
+
 
     @PostMapping("/register/aluno")
-    public ResponseEntity registerAluno(@RequestBody RegisterDTO data){
+    public ResponseEntity registerAluno(@RequestBody RegisterAlunoDTO data){
         try {
             // Verifica se email já existe como aluno
             if(alunoService.findByEmail(data.email()) != null) {
@@ -140,6 +167,33 @@ public class AuthenticationController {
             return ResponseEntity.status(201).body("Professor registrado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao registrar professor: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/register/adm")
+    public ResponseEntity registerAdm(@RequestBody RegisterDTO data){
+        try {
+            // Verifica se email já existe como aluno
+            if(alunoService.findByEmail(data.login()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como aluno");
+            }
+
+            // Verifica se email já existe como professor (opcional - para evitar conflito)
+            if(professorService.findByEmail(data.login()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como professor. Use outro email.");
+            }
+
+            if(! data.login().contains("@")){
+                return ResponseEntity.badRequest().build();
+            }
+
+            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
+            AdministracaoModel newAdm = new AdministracaoModel(senhaCripto, data.login());
+            newAdm = administracaoService.creat(newAdm);
+
+            return ResponseEntity.status(201).body("Adm registrado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao registrar adm: " + e.getMessage());
         }
     }
 }

@@ -4,10 +4,10 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 
 import dm.java10x.AvaliacaoDeProfessores.dto.AvaliacaoDaAulaDTO;
-import dm.java10x.AvaliacaoDeProfessores.model.AlunoModel;
-import dm.java10x.AvaliacaoDeProfessores.model.AulaModel;
-import dm.java10x.AvaliacaoDeProfessores.model.AvaliacaoModel;
-import dm.java10x.AvaliacaoDeProfessores.model.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.AvaliacaoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
 import dm.java10x.AvaliacaoDeProfessores.service.AulaService;
 import dm.java10x.AvaliacaoDeProfessores.service.AvaliacaoService;
@@ -34,17 +34,6 @@ public class AlunoControler {
     @Autowired
     private AvaliacaoService avaliacaoService;
 
-    @GetMapping
-    public ResponseEntity<List<AlunoModel>> listarTodos() {
-        List<AlunoModel> alunos = alunoService.findAll();
-        return ResponseEntity.ok(alunos);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<AlunoModel> buscarPorId(@PathVariable Long id) {
-        AlunoModel aluno = alunoService.findById(id);
-        return ResponseEntity.ok(aluno);
-    }
 
     @GetMapping("/aulas/{email}")
     public ResponseEntity<List<ProfessorModel>> avaliarAulas(@PathVariable String email){
@@ -62,19 +51,5 @@ public class AlunoControler {
         AulaModel obj = this.aulaService.create(aula);
         AvaliacaoModel avaliacao = this.avaliacaoService.creat(aluno.getId(), aulaDTO.id_professor(), obj.getId());
         return ResponseEntity.ok(obj);
-    }
-
-
-    @PutMapping("/{id}")
-    public ResponseEntity<AlunoModel> atualizar(@PathVariable Long id, @RequestBody AlunoModel aluno) {
-        aluno.setId(id);
-        AlunoModel alunoAtualizado = alunoService.update(aluno);
-        return ResponseEntity.ok(alunoAtualizado);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        alunoService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -28,22 +28,15 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Rotas públicas de autenticação e registro
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login/aluno").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login/professor").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register/aluno").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register/professor").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
 
                         // Rotas protegidas - Aluno
-                        .requestMatchers("/aluno/**").hasAuthority("aluno")
+                        .requestMatchers("/aluno/**").hasAnyAuthority("aluno", "adm")
 
                         // Rotas protegidas - Professor
-                        .requestMatchers("/professor/**").hasAuthority("professor")
+                        .requestMatchers("/professor/**").hasAnyAuthority("professor", "adm")
 
-                        // Rotas que ambos podem acessar (autenticados)
-                        .requestMatchers(HttpMethod.GET, "/aula/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/aula/**").authenticated()
+                        .requestMatchers("/administracao/**").hasAuthority("adm")
 
                         .anyRequest().authenticated()
                 )

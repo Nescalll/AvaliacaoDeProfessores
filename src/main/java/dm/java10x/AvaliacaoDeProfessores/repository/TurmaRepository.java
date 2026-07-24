@@ -1,8 +1,8 @@
 package dm.java10x.AvaliacaoDeProfessores.repository;
 
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
-import dm.java10x.AvaliacaoDeProfessores.model.ProfessorModel;
-import dm.java10x.AvaliacaoDeProfessores.model.TurmaModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.TurmaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

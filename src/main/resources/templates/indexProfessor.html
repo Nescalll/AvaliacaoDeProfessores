@@ -9,22 +9,41 @@
 <body>
     <div id="container">
         <div class="info-professor">
-            <h1 id="nomeProfessor">Carregando...</h1>
+            <h1><span id="nomeProfessor">Carregando...</span></h1>
         </div>
         
-        <div class="principal">
-            <div class="avaliacao" id="aula">
-                <p>Suas aulas são:</p> 
-                <p class="melhorar">Carregando...</p>
+        <div id="informacoes">
+            <div class="principal">
+                <!-- Card Nota -->
+                <div class="avaliacao" id="nota">
+                    <div class="icon-card">⭐</div>
+                    <div class="info-card">
+                        <div class="label">Sua Nota</div>
+                        <div class="value" id="notaValor">Carregando...</div>
+                        <div class="sub">Última avaliação</div>
+                    </div>
+                </div>
+                
+                <!-- Card Melhorias -->
+                <div class="avaliacao" id="melhorias">
+                    <div class="icon-card">🚀</div>
+                    <div class="info-card">
+                        <div class="label">Melhorias</div>
+                        <div class="value" id="melhoriasValor">Carregando...</div>
+                        <div class="sub">Sugestões para evolução</div>
+                    </div>
+                </div>
             </div>
             
-            <div class="avaliacao" id="nota">
-                <p>Sua nota:</p> 
-                <p class="nota">Carregando...</p>
+            <div class="chart-wrapper">
+                <canvas id="pieChart" width="300" height="300"></canvas>
+                <div class="legend" id="legend"></div>
             </div>
         </div>
         
-        <div id="button"><button type="submit" class="btn-logout">Sair</button></div>
+        <div id="button">
+            <button type="submit" class="btn-logout">Sair</button>
+        </div>
     </div>
 
     <script src="../static/js/indexProfessor.js"></script>

@@ -1,6 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
-import dm.java10x.AvaliacaoDeProfessores.model.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AlunoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import jakarta.transaction.Transactional;

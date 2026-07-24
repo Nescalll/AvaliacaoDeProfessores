@@ -1,5 +1,6 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
+import dm.java10x.AvaliacaoDeProfessores.repository.AdministracaoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.AlunoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class AuthorizationService implements UserDetailsService {
     @Autowired
     private ProfessorRepository professorRepository;
 
+    @Autowired
+    private AdministracaoRepository administracaoRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails user = alunoRepository.findByEmail(username);
@@ -26,6 +30,11 @@ public class AuthorizationService implements UserDetailsService {
 
         user = professorRepository.findByEmail(username);
         if (user != null) {
+            return user;
+        }
+
+        user = administracaoRepository.findByLogin(username);
+        if (user != null){
             return user;
         }
 
