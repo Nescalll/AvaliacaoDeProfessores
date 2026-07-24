@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function(){
     
-    const nome = document.querySelector('input[type="text"]');
-    
-    const email = document.querySelector('input[type="email"]');
-    const senha = document.querySelector('input[type="password"]');
-    const turma = document.querySelector('select')
-    const botao = document.querySelector('button')
+    const form = document.getElementById('form');
+    const nome = document.getElementById('nome');
+    const email = document.getElementById('email');
+    const senha = document.getElementById('senha');
+    const turma = document.getElementById('turma');
+    const botao = document.getElementById('button');
 
     async function registrar(dados) {
         console.log('Enviando dados...');
@@ -30,19 +30,78 @@ document.addEventListener('DOMContentLoaded', function(){
 
     botao.addEventListener('click', function(){
         event.preventDefault();
-        if (!nome.value || !email.value || !senha.value || !turma.value) {
-        alert('Preencha todos os campos!');
-        return;
-    }
 
-    const dadosDeRegistro = {
-        nome:nome.value,
-        email:email.value,
-        senha:senha.value,
-        turma:turma.value
-    }
-
-    registrar(dadosDeRegistro);
+        checkForm();
 
     })
 })
+
+function checkInputUsername() {
+    const nomeValue = nome.value;
+
+    if (nomeValue === "") {
+        errorInput(nome, "Preencha este campo!");
+    } else {
+        const formItem = nome.parentElement;
+        formItem.className = "input-box";
+    }
+
+}
+
+function checkInputEmail() {
+    const emailValue = email.value;
+
+    if (emailValue === "") {
+        errorInput(email, "Preencha este campo!");
+    } else {
+        const formItem = email.parentElement;
+        formItem.className = "input-box";
+    }
+}
+
+function checkInputPassword() {
+    const senhaValue = senha.value;
+
+    if (senhaValue === "") {
+        errorInput(senha, "Preencha este campo!");
+    } else if(senhaValue.length < 8) {
+        errorInput(senha, "No mínimo 8 caracteres!");
+    } else {
+        const formItem = senha.parentElement;
+        formItem.className = "input-box";
+    }
+}
+
+function checkForm() {
+    checkInputUsername();
+    checkInputEmail();
+    checkInputPassword();
+
+    const formItems = form.querySelectorAll(".input-box-error");
+
+    const isValid = [...formItems].every( (item) => {
+        return item.className === "input-box";
+    })
+
+    if (isValid) {
+        alert("Formulário enviado com sucesso!");
+
+        const dadosDeRegistro = {
+                nome: nome.value,
+                email: email.value,
+                senha: senha.value,
+                turma: turma.value
+            }
+
+            registrar(dadosDeRegistro);
+    }
+}
+
+function errorInput(input, message) {
+    const formItem = input.parentElement;
+    const textMessage = formItem.querySelector("a");
+
+    textMessage.innerText = message;
+
+    formItem.className = "input-box-error";
+}
