@@ -16,6 +16,7 @@ public class TurmaModel {
     @JoinColumn(name = "professorId")
     private ProfessorModel professorModel;
 
+    @Enumerated(EnumType.STRING)
     private Turma turma;
 
     public TurmaModel() {}

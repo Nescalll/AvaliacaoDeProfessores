@@ -6,8 +6,6 @@ import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
-import dm.java10x.AvaliacaoDeProfessores.service.AulaService;
-import dm.java10x.AvaliacaoDeProfessores.service.AvaliacaoService;
 import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
