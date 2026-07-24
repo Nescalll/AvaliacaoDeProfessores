@@ -2,6 +2,7 @@ package dm.java10x.AvaliacaoDeProfessores.service;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.AvaliacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfessorService {
@@ -131,6 +133,23 @@ public class ProfessorService {
             else {adjMap.compute(Adjetivo.PESSIMO, (key, value) ->  value + 1);}
         }
         return adjMap;
+    }
+
+    public List<Melhorias> melhorias(Long id){
+        Map<Melhorias, Integer> mapaDeMelhorias = new HashMap<>();
+        ProfessorModel professor = professorRepository.findProfessorModelById(id);
+        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
+        for (AvaliacaoModel avaliacao: avaliacoes){
+            for (Melhorias melhoria: avaliacao.getAulaModel().getMelhorias()){
+                if (mapaDeMelhorias.containsKey(melhoria)){
+                    mapaDeMelhorias.compute(melhoria, (key, value) -> value ++);
+                } else {
+                    mapaDeMelhorias.put(melhoria,0);
+                }
+            }
+        }
+        List<Melhorias> melhoriasMaisListadas = new ArrayList<>();
+        return  melhoriasMaisListadas;
     }
     public List<ProfessorModel> filtrarPorTurma(Turma turma){
         List<TurmaModel> turmas = turmaRepository.findTurmaModelByTurma(turma);

@@ -57,4 +57,11 @@ public class ProfessorControler {
         Map<Adjetivo, Integer> adjetivo = professorService.adjetivos(id);
         return ResponseEntity.ok(adjetivo);
     }
+
+    @GetMapping("/melhoria/{id}")
+    public ResponseEntity<?> buscarMelhoriaPorId(@PathVariable Long id){
+        aulaService.deletarAulasVencidas();
+        Map<Adjetivo, Integer> adjetivo = professorService.adjetivos(id);
+        return ResponseEntity.ok(adjetivo);
+    }
 }
