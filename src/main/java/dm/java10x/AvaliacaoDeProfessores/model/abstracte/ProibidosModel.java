@@ -1,11 +1,11 @@
 package dm.java10x.AvaliacaoDeProfessores.model.abstracte;
 
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.TipoDaNotificacao;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "tb_proibicao")
 public class ProibidosModel {
 
     @Id
