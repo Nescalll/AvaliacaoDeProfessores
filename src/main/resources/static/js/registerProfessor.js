@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
-    const username = document.querySelector('input[type="text"]');
-    const email = document.querySelector('input[type="email"]');
-    const password = document.querySelector('input[type="password"]');
-    const subject = document.querySelector('input[type="text"]#subject');
+    const username = document.getElementById('username');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const subject = document.getElementById('subject');
     const turmas = document.querySelectorAll('input[type = "checkbox"]');
-    const button = document.querySelector('button');
+    const button = document.getElementById('submit');
 
     
     async function registrar(dados) {
@@ -30,21 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', function () {
         event.preventDefault();
         
-        const allInputValid = allCheckFunctions();
-        const valoresSelecionados = getSelectedValues(turmas);
-        
-        if (allInputValid) {
-            const RegisterData = {
-                nome: username.value,
-                email: email.value,
-                senha: password.value,
-                materia: subject.value,
-                turmas: valoresSelecionados
-            }
-    
-            registrar(RegisterData);
-            
-        }
+        checkForm();
 
     })
 
@@ -115,7 +101,37 @@ function checkInputSubject() {
     }
 }
 
+function checkForm() {
+    checkInputUsername();
+    checkInputEmail();
+    checkInputPassword();
+    checkInputSubject();
 
+    const formItems = form.querySelectorAll(".input-box-error");
+
+    const isValid = [...formItems].every((item) => {
+        return item.className === "input-box";
+    })
+
+    if (isValid) {
+        const valoresSelecionados = getSelectedValues(turmas);
+
+        if (allInputValid) {
+            alert("Formulário enviado com sucesso!");
+
+            const RegisterData = {
+                nome: username.value,
+                email: email.value,
+                senha: password.value,
+                materia: subject.value,
+                turmas: valoresSelecionados
+            }
+
+            registrar(RegisterData);
+
+        }
+    }
+}
 
 function errorInput(input, message) {
     const formItem = input.parentElement;
@@ -124,11 +140,4 @@ function errorInput(input, message) {
     textMessage.innerText = message;
 
     formItem.className = "input-box-error";
-}
-
-function allCheckFunctions() {
-    checkInputUsername();
-    checkInputEmail();
-    checkInputPassword();
-    checkInputSubject();
 }

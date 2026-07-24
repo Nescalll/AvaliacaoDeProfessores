@@ -147,6 +147,7 @@ button:hover {
 .input-box-error a{
     color: #ff3b25;
     position: relative;
-    bottom: -1px;
+    bottom: -2px;
+    visibility: visible;
     font-size: 15px;
 }
