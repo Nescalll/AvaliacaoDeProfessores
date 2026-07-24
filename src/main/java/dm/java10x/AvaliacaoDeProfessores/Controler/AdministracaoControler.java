@@ -26,17 +26,12 @@ import java.util.Objects;
 @RequestMapping("/administracao")
 public class AdministracaoControler {
 
-    @Autowired
-    private AulaService aulaService;
 
     @Autowired
     private AlunoService alunoService;
 
     @Autowired
     private ProfessorService professorService;
-
-    @Autowired
-    private AvaliacaoService avaliacaoService;
 
     //Alunos
     @GetMapping("/alunos")

@@ -27,9 +27,6 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private TurmaRepository turmaRepository;
-
-    @Autowired
     private AlunoService alunoService;
 
     @Autowired

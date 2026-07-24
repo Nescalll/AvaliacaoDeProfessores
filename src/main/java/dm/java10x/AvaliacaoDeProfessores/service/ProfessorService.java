@@ -78,7 +78,6 @@ public class ProfessorService {
         if (Objects.nonNull(obj.nome())){newProfessor.setNome(obj.nome());}
         if (Objects.nonNull(obj.turmas())){atualizaTurma(obj.turmas(), newProfessor);}
 
-        // VERIFICA SE O ARQUIVO NÃO É NULO ANTES DE ATUALIZAR
         if (Objects.nonNull(obj.file()) && !obj.file().isEmpty()){
             atualizaImage(obj.file(), newProfessor);
         }
@@ -148,7 +147,20 @@ public class ProfessorService {
                 }
             }
         }
-        List<Melhorias> melhoriasMaisListadas = new ArrayList<>();
+        List<Melhorias> melhoriasMaisListadas = List.of(null, null, null);
+        List<Integer> valoresMaisListados = List.of(0, 0, 0);
+        for (Map.Entry<Melhorias, Integer> valor: mapaDeMelhorias.entrySet()){
+            if (valor.getValue() > valoresMaisListados.get(0)){
+                melhoriasMaisListadas.add(0, valor.getKey());
+                valoresMaisListados.add(0, valor.getValue());
+            } else if (valor.getValue() > valoresMaisListados.get(1)) {
+                melhoriasMaisListadas.add(1, valor.getKey());
+                valoresMaisListados.add(1, valor.getValue());
+            } else if (valor.getValue() > valoresMaisListados.get(2)) {
+                melhoriasMaisListadas.add(2, valor.getKey());
+                valoresMaisListados.add(2, valor.getValue());
+            }
+        }
         return  melhoriasMaisListadas;
     }
     public List<ProfessorModel> filtrarPorTurma(Turma turma){
