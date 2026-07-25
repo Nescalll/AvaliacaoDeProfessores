@@ -7,7 +7,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.querySelector('input[type="email"]');
     const passwordInput = document.querySelector('input[type="password"]');
     const submitButton = document.querySelector('button[type="submit"]');
+    const adminButton = document.getElementById('adm-egg');
+    const hrElement = document.getElementById('hr');
+    const adminLink = document.getElementById('admin');
     
+    adminButton.addEventListener('click', function () {
+
+        hrElement.classList.toggle('adm-open');
+        adminLink.classList.toggle('adm-open');
+    })
+
     // URL do backend
     const API_URL = 'http://localhost:8082/auth/login/professor';
     
