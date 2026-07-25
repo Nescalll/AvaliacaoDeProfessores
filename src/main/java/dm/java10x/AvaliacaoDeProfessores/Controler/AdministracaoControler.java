@@ -10,10 +10,8 @@ import dm.java10x.AvaliacaoDeProfessores.model.abstracte.NotificacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
-import dm.java10x.AvaliacaoDeProfessores.service.AdministracaoService;
-import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
-import dm.java10x.AvaliacaoDeProfessores.service.NotificacaoService;
-import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.UserModel;
+import dm.java10x.AvaliacaoDeProfessores.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,6 +41,9 @@ public class AdministracaoControler {
 
     @Autowired
     private NotificacaoService notificacaoService;
+
+    @Autowired
+    private UserService userService;
 
     //Alunos
     @GetMapping("/alunos")
@@ -265,7 +266,18 @@ public class AdministracaoControler {
     public void adicionarNovoUsuario(@PathVariable Long id){
         try {
             NotificacaoModel notificao = this.notificacaoService.findNewUserByIdDeReferencia(id);
-
+            UserModel usuario = this.userService.findById(notificao.getIdDeReferencia());
+            if (usuario.getRole().equalsIgnoreCase("aluno")){
+                registerAluno(new RegisterAlunoDTO(usuario.getNome(), usuario.getTurmas().get(0), usuario.getSenha(), usuario.getEmail()));
+                this.userService.delete(usuario.getId());
+                this.notificacaoService.delete(notificao.getId());
+                return;
+            } else if (usuario.getRole().equalsIgnoreCase("professor")) {
+                registerProfessor(new RegisterProfessorDTO(usuario.getNome(), usuario.getMateria(), usuario.getSenha(), usuario.getEmail(),usuario.getTurmas(), null ));
+                this.userService.delete(usuario.getId());
+                this.notificacaoService.delete(notificao.getId());
+                return;
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

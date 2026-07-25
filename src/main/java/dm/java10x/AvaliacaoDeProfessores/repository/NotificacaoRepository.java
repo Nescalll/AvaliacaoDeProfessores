@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface NotificacaoRepository extends JpaRepository<NotificacaoModel, Long> {
 
 
-    Optional<List<NotificacaoModel>> findByIdDeReferencia(Long aLong);
+    List<NotificacaoModel> findByIdDeReferencia(Long aLong);
 }
