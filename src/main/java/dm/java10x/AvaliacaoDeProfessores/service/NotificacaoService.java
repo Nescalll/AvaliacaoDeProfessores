@@ -39,7 +39,7 @@ public class NotificacaoService {
     public NotificacaoModel findNewUserByIdDeReferencia(Long id){
         List<NotificacaoModel> notificacoes = this.notificacaoRepository.findByIdDeReferencia(id);
             for (NotificacaoModel n: notificacoes){
-                if (n.getIdDeReferencia().equals(TipoDaNotificacao.USUARIO)) return n;
+                if (n.getNotificacao().equals(TipoDaNotificacao.USUARIO)){ return n;}
             }
 
         System.out.println("Notificação não encontrada");
