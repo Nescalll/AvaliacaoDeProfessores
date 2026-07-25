@@ -2,17 +2,21 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
+import dm.java10x.AvaliacaoDeProfessores.dto.RegisterAlunoDTO;
+import dm.java10x.AvaliacaoDeProfessores.dto.RegisterAdmDTO;
+import dm.java10x.AvaliacaoDeProfessores.dto.RegisterProfessorDTO;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.NotificacaoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
-import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
-import dm.java10x.AvaliacaoDeProfessores.service.AulaService;
-import dm.java10x.AvaliacaoDeProfessores.service.AvaliacaoService;
-import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.UserModel;
+import dm.java10x.AvaliacaoDeProfessores.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +31,7 @@ import java.util.Objects;
 public class AdministracaoControler {
 
     @Autowired
-    private AulaService aulaService;
+    private AdministracaoService administracaoService;
 
     @Autowired
     private AlunoService alunoService;
@@ -36,7 +40,10 @@ public class AdministracaoControler {
     private ProfessorService professorService;
 
     @Autowired
-    private AvaliacaoService avaliacaoService;
+    private NotificacaoService notificacaoService;
+
+    @Autowired
+    private UserService userService;
 
     //Alunos
     @GetMapping("/alunos")
@@ -134,5 +141,145 @@ public class AdministracaoControler {
     public ResponseEntity<Void> deletarProfessor(@PathVariable Long id) {
         professorService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //Administração
+
+    @GetMapping
+    public ResponseEntity<List<AdministracaoModel>> listarTodosAdms(){
+        return ResponseEntity.ok(administracaoService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AdministracaoModel> listarAdmPeloId(@PathVariable Long id){
+        return ResponseEntity.ok(administracaoService.findById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AdministracaoModel> atualizarAdm(@PathVariable Long id, @RequestBody AdministracaoModel
+                                                    administracaoModel) {
+        administracaoModel.setId(id);
+        AdministracaoModel newAdm = administracaoService.update(administracaoModel);
+        return ResponseEntity.ok(newAdm);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarAdm(@PathVariable Long id) {
+        administracaoService.deletarAdm(administracaoService.findById(id));
+        return ResponseEntity.noContent().build();
+    }
+
+    //Registro
+
+    @PostMapping("/register/aluno")
+    public ResponseEntity registerAluno(@RequestBody RegisterAlunoDTO data){
+        try {
+            // Verifica se email já existe como aluno
+            if(alunoService.findByEmail(data.email()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como aluno");
+            }
+
+            // Verifica se email já existe como professor (opcional - para evitar conflito)
+            if(professorService.findByEmail(data.email()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como professor. Use outro email.");
+            }
+
+            if(! data.email().contains("@")){
+                return ResponseEntity.badRequest().build();
+            }
+
+            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
+            AlunoModel aluno = new AlunoModel(data.nome(), data.turma(), senhaCripto, data.email());
+            alunoService.create(aluno);
+
+            return ResponseEntity.status(201).body("Aluno registrado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao registrar aluno: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/register/professor")
+    public ResponseEntity registerProfessor(@RequestBody RegisterProfessorDTO data){
+        try {
+            if(professorService.findByEmail(data.email()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como professor");
+            }
+
+            if(alunoService.findByEmail(data.email()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como aluno. Use outro email.");
+            }
+
+            if (! data.email().contains("@")){
+                return ResponseEntity.badRequest().body("Email invalido");
+            }
+
+            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
+            ProfessorModel professor = new ProfessorModel(
+                    data.nome(),
+                    data.materia(),
+                    senhaCripto,
+                    data.email());
+            professorService.create(professor, data.turmas(), data.file());
+            ProfessorModel professorSalvo = professorService.findProfessorModelByEmail(data.email());
+            return ResponseEntity.status(201).body("Professor registrado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao registrar professor: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/register/adm")
+    public ResponseEntity registerAdm(@RequestBody RegisterAdmDTO data){
+        try {
+            // Verifica se email já existe como aluno
+            if(alunoService.findByEmail(data.login()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como aluno");
+            }
+
+            // Verifica se email já existe como professor (opcional - para evitar conflito)
+            if(professorService.findByEmail(data.login()) != null) {
+                return ResponseEntity.badRequest().body("Email já cadastrado como professor. Use outro email.");
+            }
+
+            if(! data.login().contains("@")){
+                return ResponseEntity.badRequest().build();
+            }
+
+            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
+            AdministracaoModel newAdm = new AdministracaoModel(senhaCripto, data.login());
+            newAdm = administracaoService.creat(newAdm);
+
+            return ResponseEntity.status(201).body("Adm registrado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao registrar adm: " + e.getMessage());
+        }
+    }
+
+    //Notificações
+
+
+    @GetMapping("/notificacao")
+    public ResponseEntity<List<NotificacaoModel>> listarTodasNotificacoes(){
+        return ResponseEntity.ok(notificacaoService.findAll());
+    }
+
+    @PostMapping("/notificacao/adicionar/{id}")
+    public void adicionarNovoUsuario(@PathVariable Long id){
+        try {
+            NotificacaoModel notificao = this.notificacaoService.findNewUserByIdDeReferencia(id);
+            UserModel usuario = this.userService.findById(notificao.getIdDeReferencia());
+            if (usuario.getRole().equalsIgnoreCase("aluno")){
+                registerAluno(new RegisterAlunoDTO(usuario.getNome(), usuario.getTurmas().get(0), usuario.getSenha(), usuario.getEmail()));
+                this.userService.delete(usuario.getId());
+                this.notificacaoService.delete(notificao.getId());
+                return;
+            } else if (usuario.getRole().equalsIgnoreCase("professor")) {
+                registerProfessor(new RegisterProfessorDTO(usuario.getNome(), usuario.getMateria(), usuario.getSenha(), usuario.getEmail(),usuario.getTurmas(), null ));
+                this.userService.delete(usuario.getId());
+                this.notificacaoService.delete(notificao.getId());
+                return;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

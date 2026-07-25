@@ -1,14 +1,15 @@
 package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.*;
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.TipoDaNotificacao;
 import dm.java10x.AvaliacaoDeProfessores.infra.security.TokenService;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.NotificacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.UserModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.TurmaRepository;
-import dm.java10x.AvaliacaoDeProfessores.service.AdministracaoService;
-import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
-import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
+import dm.java10x.AvaliacaoDeProfessores.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,9 +31,6 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private TurmaRepository turmaRepository;
-
-    @Autowired
     private AlunoService alunoService;
 
     @Autowired
@@ -38,6 +39,11 @@ public class AuthenticationController {
     @Autowired
     private AdministracaoService administracaoService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private NotificacaoService notificacaoService;
 
     @Autowired
     private TokenService tokenService;
@@ -113,87 +119,64 @@ public class AuthenticationController {
         }
     }
 
-
-    @PostMapping("/register/aluno")
-    public ResponseEntity registerAluno(@RequestBody RegisterAlunoDTO data){
-        try {
-            // Verifica se email já existe como aluno
-            if(alunoService.findByEmail(data.email()) != null) {
-                return ResponseEntity.badRequest().body("Email já cadastrado como aluno");
-            }
-
-            // Verifica se email já existe como professor (opcional - para evitar conflito)
-            if(professorService.findByEmail(data.email()) != null) {
-                return ResponseEntity.badRequest().body("Email já cadastrado como professor. Use outro email.");
-            }
-
-            if(! data.email().contains("@")){
-                return ResponseEntity.badRequest().build();
-            }
-
-            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
-            AlunoModel aluno = new AlunoModel(data.nome(), data.turma(), senhaCripto, data.email());
-            alunoService.create(aluno);
-
-            return ResponseEntity.status(201).body("Aluno registrado com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao registrar aluno: " + e.getMessage());
+    @PostMapping("/register")
+    public ResponseEntity solicitarRegistro(@RequestBody RegisterAnyDTO data){
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("success", true);
+        try{
+        if(alunoService.findByEmail(data.email()) != null
+                || professorService.findByEmail(data.email()) != null
+                || administracaoService.findByEmail(data.email()) != null
+                || ! data.email().contains("@")) {
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Email", "O email: "+data.email()+" não é valido");
         }
-    }
-
-    @PostMapping("/register/professor")
-    public ResponseEntity registerProfessor(@RequestBody RegisterProfessorDTO data){
-        try {
-            if(professorService.findByEmail(data.email()) != null) {
-                return ResponseEntity.badRequest().body("Email já cadastrado como professor");
-            }
-
-            if(alunoService.findByEmail(data.email()) != null) {
-                return ResponseEntity.badRequest().body("Email já cadastrado como aluno. Use outro email.");
-            }
-
-            if (! data.email().contains("@")){
-                return ResponseEntity.badRequest().body("Email invalido");
-            }
-
-            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
-            ProfessorModel professor = new ProfessorModel(
-                    data.nome(),
-                    data.materia(),
-                    senhaCripto,
-                    data.email());
-            professorService.create(professor, data.turmas(), data.file());
-            ProfessorModel professorSalvo = professorService.findProfessorModelByEmail(data.email());
-            return ResponseEntity.status(201).body("Professor registrado com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao registrar professor: " + e.getMessage());
+        if (data.senha().length() < 8){
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Senha", "A senha deve conter no minimo 8 caracteres");
         }
-    }
+        if (data.turmas().isEmpty()){
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Turma", "Deve conter no minimo uma turma");
+        }
 
-    @PostMapping("/register/adm")
-    public ResponseEntity registerAdm(@RequestBody RegisterDTO data){
-        try {
-            // Verifica se email já existe como aluno
-            if(alunoService.findByEmail(data.login()) != null) {
-                return ResponseEntity.badRequest().body("Email já cadastrado como aluno");
+        if (data.turmas().size() > 1 && data.role().equalsIgnoreCase("aluno")){
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Turma", "Aluno deve conter apenas uma turma");
+        }
+
+        if (data.role().equalsIgnoreCase("professor") && data.materia().isEmpty()){
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Materia", "Um professor deve conter uma materia");
+        }
+
+        if (! data.role().equalsIgnoreCase("professor") && ! data.role().equalsIgnoreCase("aluno")){
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Role", "role: "+data.role()+" invalida");
+        }
+
+        Boolean sucess = (Boolean) resposta.get("success");
+        if (sucess){
+            UserModel user = new UserModel();
+            user.setEmail(data.email());
+            user.setNome(data.nome());
+            user.setRole(data.role());
+            user.setSenha(data.senha());
+            user.setTurmas(data.turmas());
+            if (data.materia().isPresent()){
+                user.setMateria(data.materia().get());
             }
-
-            // Verifica se email já existe como professor (opcional - para evitar conflito)
-            if(professorService.findByEmail(data.login()) != null) {
-                return ResponseEntity.badRequest().body("Email já cadastrado como professor. Use outro email.");
-            }
-
-            if(! data.login().contains("@")){
-                return ResponseEntity.badRequest().build();
-            }
-
-            String senhaCripto = new BCryptPasswordEncoder().encode(data.senha());
-            AdministracaoModel newAdm = new AdministracaoModel(senhaCripto, data.login());
-            newAdm = administracaoService.creat(newAdm);
-
-            return ResponseEntity.status(201).body("Adm registrado com sucesso!");
+            user = userService.create(user);
+            NotificacaoModel notificacao = new NotificacaoModel(TipoDaNotificacao.USUARIO, user.getId(), "Adicionar novo usuario com role: "+user.getRole());
+            notificacaoService.creat(notificacao);
+            resposta.put("notificação", "O Adm recebeu uma notifição sobre sua solicitação de cadastro com a role: "+user.getRole());
+            return ResponseEntity.ok().body(resposta);
+        }
+        return ResponseEntity.badRequest().body(resposta);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao registrar adm: " + e.getMessage());
+            resposta.compute("success", (key, value) -> value = false);
+            resposta.put("Error", e.getMessage());
+            throw new RuntimeException(resposta.toString());
         }
     }
 }

@@ -5,6 +5,7 @@ import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_aula")
@@ -19,7 +20,7 @@ public class AulaModel {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "melhorias", nullable = false)
-    private Melhorias[] melhorias = new Melhorias[3];
+    private List<Melhorias> melhorias;
 
     @Column(name = "dataDeCriacao", nullable = false)
     private LocalDateTime dataDeCriacao;
@@ -32,16 +33,27 @@ public class AulaModel {
     @Column(name = "id", nullable = false)
     private long id;
 
+    @Column(name = "comentario")
+    private String comentario;
     public AulaModel() {
     }
 
-    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao, Melhorias[] melhorias) {
+    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao, List<Melhorias> melhorias, String comentario) {
         this.adjetivo = adjetivo;
         this.nota = nota;
         this.dataDeCriacao = dataDeCriacao;
         this.dataDeInspiracao = dataDeInspiracao;
         this.melhorias = melhorias;
+        this.comentario = comentario;
 
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     public Adjetivo getAdjetivo() {
@@ -84,7 +96,7 @@ public class AulaModel {
         this.dataDeInspiracao = dataDeInspiracao;
     }
 
-    public Melhorias[] getMelhorias() {return melhorias;}
+    public List<Melhorias> getMelhorias() {return melhorias;}
 
-    public void setMelhorias(Melhorias[] melhorias){this.melhorias = melhorias;}
+    public void setMelhorias(List<Melhorias> melhorias){this.melhorias.addAll(melhorias);}
 }

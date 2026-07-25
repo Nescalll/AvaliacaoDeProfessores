@@ -2,6 +2,7 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
@@ -26,9 +27,6 @@ public class ProfessorControler {
 
     @Autowired
     private AulaService aulaService;
-
-    @Autowired
-    private AlunoService alunoService;
 
     @Autowired
     private ProfessorService professorService;
@@ -61,7 +59,7 @@ public class ProfessorControler {
     @GetMapping("/melhoria/{id}")
     public ResponseEntity<?> buscarMelhoriaPorId(@PathVariable Long id){
         aulaService.deletarAulasVencidas();
-        Map<Adjetivo, Integer> adjetivo = professorService.adjetivos(id);
-        return ResponseEntity.ok(adjetivo);
+        List<Melhorias> melhorias = professorService.melhorias(id);
+        return ResponseEntity.ok(melhorias);
     }
 }
