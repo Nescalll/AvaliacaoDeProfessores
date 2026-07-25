@@ -3,8 +3,10 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
+import dm.java10x.AvaliacaoDeProfessores.service.AdministracaoService;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
 import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import java.util.Objects;
 @RequestMapping("/administracao")
 public class AdministracaoControler {
 
+    @Autowired
+    private AdministracaoService administracaoService;
 
     @Autowired
     private AlunoService alunoService;
@@ -126,6 +130,32 @@ public class AdministracaoControler {
     @DeleteMapping("/professores/{id}")
     public ResponseEntity<Void> deletarProfessor(@PathVariable Long id) {
         professorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //Administração
+
+    @GetMapping
+    public ResponseEntity<List<AdministracaoModel>> listarTodosAdms(){
+        return ResponseEntity.ok(administracaoService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AdministracaoModel> listarAdmPeloId(@PathVariable Long id){
+        return ResponseEntity.ok(administracaoService.findById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AdministracaoModel> atualizarAdm(@PathVariable Long id, @RequestBody AdministracaoModel
+                                                    administracaoModel) {
+        administracaoModel.setId(id);
+        AdministracaoModel newAdm = administracaoService.update(administracaoModel);
+        return ResponseEntity.ok(newAdm);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarAdm(@PathVariable Long id) {
+        administracaoService.deletarAdm(administracaoService.findById(id));
         return ResponseEntity.noContent().build();
     }
 }
