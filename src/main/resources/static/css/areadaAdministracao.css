@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sanchez:ital@0;1&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lexend", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: white;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 40px;
+    background-color: #bfddfb;
+    color: white;
+    padding: 15px;
+    border-radius: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+}
+
+.professor-registro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.professor, .registro {
+    width: 250px;
+    height: 130px;
+}
+
+.professor {
+    padding-right: 50px;
+}
+
+.registro {
+    padding-left: 50px;
+}
+
+input {
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: #bfddfb;
+}
+
+.deslogar {
+    position: fixed;
+    bottom: 40px;
+    right: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #bfddfb;
+    border: 2px solid black;
+    border-radius: 30px;
+    font-size: 15px;
+}
