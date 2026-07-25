@@ -61,7 +61,7 @@ h1 {
     font-size: 40px;
 }
 
-button {
+.login-btn {
     width: 100%;
     padding: 12px;
     margin-top: 8px;
@@ -75,7 +75,7 @@ button {
 .dyaprofessor {
     display: flex;
     justify-content: center;
-    margin: 7px 0;
+    margin: 7px 5px 0;
     text-decoration: none;
     color: #4D3C2C;
     font-size: 18px;
@@ -92,10 +92,17 @@ hr {
     margin: auto;
 }
 
+.hr {
+    width: 170px;
+    display: block;
+    margin: auto;
+    visibility: hidden;
+}
+
 .register {
     display: flex;
     justify-content: center;
-    margin: 7px 0;
+    margin: 1px 0;
     text-decoration: none;
     color: #4D3C2C;
     font-size: 18px;
@@ -104,4 +111,35 @@ hr {
 
 .register:hover {
     text-decoration: underline;
+}
+
+.admin {
+    display: flex;
+    justify-content: center;
+    margin: 1px 0;
+    text-decoration: none;
+    color: #4D3C2C;
+    font-size: 18px;
+    font-weight: 500;
+    visibility: hidden;
+}
+
+.admin:hover {
+    text-decoration: underline;
+}
+
+.admin-easter-egg {
+    opacity: 0;
+    position: absolute;
+    left: 20px;
+    bottom: 234px;
+    width: 17px;
+    height: 20px;
+    rotate: 45deg;
+    border-radius: 5px;
+    border: none;
+}
+
+.adm-open {
+    visibility: visible;
 }
