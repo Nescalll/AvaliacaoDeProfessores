@@ -6,11 +6,13 @@ import dm.java10x.AvaliacaoDeProfessores.dto.RegisterAlunoDTO;
 import dm.java10x.AvaliacaoDeProfessores.dto.RegisterAdmDTO;
 import dm.java10x.AvaliacaoDeProfessores.dto.RegisterProfessorDTO;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.NotificacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.service.AdministracaoService;
 import dm.java10x.AvaliacaoDeProfessores.service.AlunoService;
+import dm.java10x.AvaliacaoDeProfessores.service.NotificacaoService;
 import dm.java10x.AvaliacaoDeProfessores.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +40,9 @@ public class AdministracaoControler {
 
     @Autowired
     private ProfessorService professorService;
+
+    @Autowired
+    private NotificacaoService notificacaoService;
 
     //Alunos
     @GetMapping("/alunos")
@@ -245,6 +250,24 @@ public class AdministracaoControler {
             return ResponseEntity.status(201).body("Adm registrado com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao registrar adm: " + e.getMessage());
+        }
+    }
+
+    //Notificações
+
+
+    @GetMapping("/notificacao")
+    public ResponseEntity<List<NotificacaoModel>> listarTodasNotificacoes(){
+        return ResponseEntity.ok(notificacaoService.findAll());
+    }
+
+    @PostMapping("/notificacao/adicionar/{id}")
+    public void adicionarNovoUsuario(@PathVariable Long id){
+        try {
+            NotificacaoModel notificao = this.notificacaoService.findNewUserByIdDeReferencia(id);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
