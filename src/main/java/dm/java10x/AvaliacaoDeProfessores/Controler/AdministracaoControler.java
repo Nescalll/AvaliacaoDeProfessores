@@ -3,7 +3,7 @@ package dm.java10x.AvaliacaoDeProfessores.Controler;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
 import dm.java10x.AvaliacaoDeProfessores.dto.RegisterAlunoDTO;
-import dm.java10x.AvaliacaoDeProfessores.dto.RegisterDTO;
+import dm.java10x.AvaliacaoDeProfessores.dto.RegisterAdmDTO;
 import dm.java10x.AvaliacaoDeProfessores.dto.RegisterProfessorDTO;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AdministracaoModel;
@@ -222,7 +222,7 @@ public class AdministracaoControler {
     }
 
     @PostMapping("/register/adm")
-    public ResponseEntity registerAdm(@RequestBody RegisterDTO data){
+    public ResponseEntity registerAdm(@RequestBody RegisterAdmDTO data){
         try {
             // Verifica se email já existe como aluno
             if(alunoService.findByEmail(data.login()) != null) {
