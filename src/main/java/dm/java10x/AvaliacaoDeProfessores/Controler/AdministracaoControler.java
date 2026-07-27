@@ -67,6 +67,10 @@ public class AdministracaoControler {
 
     @DeleteMapping("/alunos/{id}")
     public ResponseEntity<Void> deletarAluno(@PathVariable Long id) {
+        AlunoModel alunoModel = alunoService.findById(id);
+        if (Objects.isNull(alunoModel)){
+            return ResponseEntity.notFound().build();
+        }
         alunoService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -263,23 +267,24 @@ public class AdministracaoControler {
     }
 
     @PostMapping("/notificacao/adicionar/{id}")
-    public void adicionarNovoUsuario(@PathVariable Long id){
+    public ResponseEntity adicionarNovoUsuario(@PathVariable Long id){
         try {
             NotificacaoModel notificao = this.notificacaoService.findNewUserByIdDeReferencia(id);
             UserModel usuario = this.userService.findById(notificao.getIdDeReferencia());
             if (usuario.getRole().equalsIgnoreCase("aluno")){
-                registerAluno(new RegisterAlunoDTO(usuario.getNome(), usuario.getTurmas().get(0), usuario.getSenha(), usuario.getEmail()));
+                ResponseEntity entity = registerAluno(new RegisterAlunoDTO(usuario.getNome(), usuario.getTurmas().get(0), usuario.getSenha(), usuario.getEmail()));
                 this.userService.delete(usuario.getId());
                 this.notificacaoService.delete(notificao.getId());
-                return;
+                return entity;
             } else if (usuario.getRole().equalsIgnoreCase("professor")) {
-                registerProfessor(new RegisterProfessorDTO(usuario.getNome(), usuario.getMateria(), usuario.getSenha(), usuario.getEmail(),usuario.getTurmas(), null ));
+                ResponseEntity entity = registerProfessor(new RegisterProfessorDTO(usuario.getNome(), usuario.getMateria(), usuario.getSenha(), usuario.getEmail(),usuario.getTurmas(), null ));
                 this.userService.delete(usuario.getId());
                 this.notificacaoService.delete(notificao.getId());
-                return;
+                return entity;
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
+        return null;
     }
 }
