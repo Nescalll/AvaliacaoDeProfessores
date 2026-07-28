@@ -1,26 +1,15 @@
 package dm.java10x.AvaliacaoDeProfessores.model.entity;
 
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "tb_aula")
 public class AulaModel {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "adjetivo", nullable = false)
-    private Adjetivo adjetivo;
-
     @Column(name = "nota", nullable = false)
     private int nota;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "melhorias", nullable = false)
-    private List<Melhorias> melhorias;
 
     @Column(name = "dataDeCriacao", nullable = false)
     private LocalDateTime dataDeCriacao;
@@ -38,14 +27,18 @@ public class AulaModel {
     public AulaModel() {
     }
 
-    public AulaModel(Adjetivo adjetivo, int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao, List<Melhorias> melhorias, String comentario) {
-        this.adjetivo = adjetivo;
+    public AulaModel(int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao, String comentario) {
         this.nota = nota;
         this.dataDeCriacao = dataDeCriacao;
         this.dataDeInspiracao = dataDeInspiracao;
-        this.melhorias = melhorias;
         this.comentario = comentario;
 
+    }
+
+    public AulaModel(int nota, LocalDateTime dataDeCriacao, LocalDateTime dataDeInspiracao) {
+        this.nota = nota;
+        this.dataDeCriacao = dataDeCriacao;
+        this.dataDeInspiracao = dataDeInspiracao;
     }
 
     public String getComentario() {
@@ -54,14 +47,6 @@ public class AulaModel {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
-    }
-
-    public Adjetivo getAdjetivo() {
-        return adjetivo;
-    }
-
-    public void setAdjetivo(Adjetivo adjetivo) {
-        this.adjetivo = adjetivo;
     }
 
     public int getNota() {
@@ -95,8 +80,4 @@ public class AulaModel {
     public void setDataDeInspiracao(LocalDateTime dataDeInspiracao) {
         this.dataDeInspiracao = dataDeInspiracao;
     }
-
-    public List<Melhorias> getMelhorias() {return melhorias;}
-
-    public void setMelhorias(List<Melhorias> melhorias){this.melhorias.addAll(melhorias);}
 }
