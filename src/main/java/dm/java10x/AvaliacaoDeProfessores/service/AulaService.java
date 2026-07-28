@@ -1,8 +1,11 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.TipoDaNotificacao;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.ProibidosModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AulaRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
+import dm.java10x.AvaliacaoDeProfessores.repository.ProibidosRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class AulaService {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+
+    @Autowired
+    private ProibidosRepository proibidosRepository;
 
     public void deletarAulasVencidas(){
         List<AulaModel> aulas = findAll();
@@ -40,6 +46,14 @@ public class AulaService {
         return aulaModel.orElseThrow(() -> new RuntimeException((
                 "Aula não encontrada"
                 )));
+    }
+
+    public Boolean validarComentario(String comentario){
+        List<ProibidosModel> palavrasProibidas = proibidosRepository.findAllByTipo(TipoDaNotificacao.BLOQUIO_DE_PALAVRA);
+        for (ProibidosModel palavra: palavrasProibidas){
+            if (comentario.toLowerCase().contains(palavra.getBloqueado().toLowerCase())) return false;
+        }
+        return true;
     }
 
     @Transactional
