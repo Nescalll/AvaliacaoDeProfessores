@@ -1,6 +1,5 @@
 package dm.java10x.AvaliacaoDeProfessores.model.abstracte;
 
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
@@ -14,7 +13,6 @@ public class AvaliacaoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private Melhorias melhorias;
 
     @ManyToOne
     @JoinColumn(name = "professorId")
@@ -30,12 +28,11 @@ public class AvaliacaoModel {
 
     public AvaliacaoModel(){}
 
-    public AvaliacaoModel(long id, AlunoModel alunoModel, ProfessorModel professorModel, AulaModel aulaModel, Melhorias melhorias) {
+    public AvaliacaoModel(long id, AlunoModel alunoModel, ProfessorModel professorModel, AulaModel aulaModel) {
         this.id = id;
         this.alunoModel = alunoModel;
         this.aulaModel = aulaModel;
         this.professorModel = professorModel;
-        this.melhorias = melhorias;
     }
 
     public long getId() {
@@ -70,11 +67,5 @@ public class AvaliacaoModel {
         this.aulaModel = aulaModel;
     }
 
-    public Melhorias getMelhorias() {
-        return melhorias;
-    }
 
-    public void setMelhorias(Melhorias melhorias) {
-        this.melhorias = melhorias;
-    }
 }
