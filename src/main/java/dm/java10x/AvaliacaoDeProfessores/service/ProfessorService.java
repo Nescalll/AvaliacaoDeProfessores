@@ -1,13 +1,12 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Adjetivo;
-import dm.java10x.AvaliacaoDeProfessores.enumeradores.Melhorias;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.AvaliacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.TurmaModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
+import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
 import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
 import dm.java10x.AvaliacaoDeProfessores.repository.ImageRepository;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ProfessorService {
@@ -110,59 +108,6 @@ public class ProfessorService {
         else{ return 0;}
     }
 
-    public Map<Adjetivo, Integer> adjetivos(long id){
-        ProfessorModel professor = findById(id);
-        Map<Adjetivo, Integer> adjMap = new HashMap<>();
-        adjMap.put(Adjetivo.OTIMO, 0);
-        adjMap.put(Adjetivo.BOM, 0);
-        adjMap.put(Adjetivo.MEDIO, 0);
-        adjMap.put(Adjetivo.RUIM, 0);
-        Adjetivo[] adjetivos = {Adjetivo.OTIMO, Adjetivo.BOM, Adjetivo.MEDIO, Adjetivo.RUIM};
-        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
-        for (AvaliacaoModel avaliacao: avaliacoes){
-            if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[0])){
-                adjMap.compute(Adjetivo.OTIMO, (key, value) ->  value + 1);
-            }
-            else if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[1])){
-                adjMap.compute(Adjetivo.BOM, (key, value) ->  value + 1);
-            }
-            else if (avaliacao.getAulaModel().getAdjetivo().equals(adjetivos[2])){
-                adjMap.compute(Adjetivo.MEDIO, (key, value) ->  value + 1);
-            }
-            else {adjMap.compute(Adjetivo.PESSIMO, (key, value) ->  value + 1);}
-        }
-        return adjMap;
-    }
-
-    public List<Melhorias> melhorias(Long id){
-        Map<Melhorias, Integer> mapaDeMelhorias = new HashMap<>();
-        ProfessorModel professor = professorRepository.findProfessorModelById(id);
-        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
-        for (AvaliacaoModel avaliacao: avaliacoes){
-            for (Melhorias melhoria: avaliacao.getAulaModel().getMelhorias()){
-                if (mapaDeMelhorias.containsKey(melhoria)){
-                    mapaDeMelhorias.compute(melhoria, (key, value) -> value ++);
-                } else {
-                    mapaDeMelhorias.put(melhoria,0);
-                }
-            }
-        }
-        List<Melhorias> melhoriasMaisListadas = List.of(null, null, null);
-        List<Integer> valoresMaisListados = List.of(0, 0, 0);
-        for (Map.Entry<Melhorias, Integer> valor: mapaDeMelhorias.entrySet()){
-            if (valor.getValue() > valoresMaisListados.get(0)){
-                melhoriasMaisListadas.add(0, valor.getKey());
-                valoresMaisListados.add(0, valor.getValue());
-            } else if (valor.getValue() > valoresMaisListados.get(1)) {
-                melhoriasMaisListadas.add(1, valor.getKey());
-                valoresMaisListados.add(1, valor.getValue());
-            } else if (valor.getValue() > valoresMaisListados.get(2)) {
-                melhoriasMaisListadas.add(2, valor.getKey());
-                valoresMaisListados.add(2, valor.getValue());
-            }
-        }
-        return  melhoriasMaisListadas;
-    }
     public List<ProfessorModel> filtrarPorTurma(Turma turma){
         List<TurmaModel> turmas = turmaRepository.findTurmaModelByTurma(turma);
         List<ProfessorModel> listaDeProfessores = new ArrayList<>();
@@ -197,6 +142,15 @@ public class ProfessorService {
         }
     }
 
+    public List<String> buscarComentariosPeloId(Long id){
+        ProfessorModel professor = findById(id);
+        List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
+        List<String> comentarios = new ArrayList<>();
+        for (AvaliacaoModel avaliacao: avaliacoes){
+            comentarios.add(avaliacao.getAulaModel().getComentario());
+        }
+        return comentarios;
+    }
     @Transactional
     public void atualizaTurma(List<Turma> turmas, ProfessorModel obj){
         turmaRepository.deleteByProfessorModel(obj);

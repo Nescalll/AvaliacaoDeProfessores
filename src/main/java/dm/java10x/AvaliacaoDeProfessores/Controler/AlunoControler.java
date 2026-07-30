@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/aluno")
@@ -43,11 +44,16 @@ public class AlunoControler {
         return ResponseEntity.ok(professoresFiltrados);
     }
     @PostMapping("/aula")
-    public ResponseEntity<AulaModel> avaliarAula(@RequestBody AvaliacaoDaAulaDTO aulaDTO){
+    public ResponseEntity<?> avaliarAula(@RequestBody AvaliacaoDaAulaDTO aulaDTO){
         AlunoModel aluno = alunoService.findAlunoModelByEmail(aulaDTO.email());
-        AulaModel aula = new AulaModel();
-        aula.setAdjetivo(aulaDTO.adjetivo());
-        aula.setNota(aulaDTO.nota());
+        AulaModel aula = new AulaModel( aulaDTO.nota(), null, null);
+        if (aulaDTO.comentario().isPresent()){
+            if (aulaService.validarComentario(aulaDTO.comentario().get())){
+            aula.setComentario(aulaDTO.comentario().get());
+            } else {
+                return ResponseEntity.badRequest().body("Palavras inapropriadas");
+            }
+        }
         AulaModel obj = this.aulaService.create(aula);
         AvaliacaoModel avaliacao = this.avaliacaoService.creat(aluno.getId(), aulaDTO.id_professor(), obj.getId());
         return ResponseEntity.ok(obj);
