@@ -109,7 +109,9 @@ public class ProfessorService {
     }
 
     public List<ProfessorModel> filtrarPorTurma(Turma turma){
+        System.out.println("Turma: "+turma);
         List<TurmaModel> turmas = turmaRepository.findTurmaModelByTurma(turma);
+        System.out.println("Turma encontrada");
         List<ProfessorModel> listaDeProfessores = new ArrayList<>();
         for (TurmaModel turminha: turmas){
             if (! listaDeProfessores.contains(turminha.getProfessorModel())){

@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function logout() {
         console.log('Realizando logout...');
         deleteAllCookies();
-        window.location.href = 'loginAluno.html';
+        //window.location.href = 'loginAluno.html';
     }
 
     async function receberProfessores(token) {

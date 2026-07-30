@@ -38,9 +38,14 @@ public class AlunoControler {
 
     @GetMapping("/aulas/{email}")
     public ResponseEntity<List<ProfessorModel>> avaliarAulas(@PathVariable String email){
+        System.out.println("Requisição recebida");
         AlunoModel aluno = alunoService.findAlunoModelByEmail(email);
+        System.out.println("Aluno encontrado");
         List<ProfessorModel> professoresQueEnsinamMesmaTurma = professorService.filtrarPorTurma(aluno.getTurma());
+        System.out.println("Professores pela turma recebido");
         List<ProfessorModel> professoresFiltrados = professorService.filtrarProfessoresNaoAvaliadosEstaSemana(professoresQueEnsinamMesmaTurma, aluno);
+        System.out.println("Professores filtrados");
+        System.out.println("Enviando");
         return ResponseEntity.ok(professoresFiltrados);
     }
     @PostMapping("/aula")
