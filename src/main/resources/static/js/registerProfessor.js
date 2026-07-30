@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+    const form = document.getElementById('form');
     const username = document.getElementById('username');
     const email = document.getElementById('email');
     const password = document.getElementById('password');
     const subject = document.getElementById('subject');
     const turmas = document.querySelectorAll('input[type = "checkbox"]');
     const button = document.getElementById('submit');
+    const updMessage = document.getElementById('upd-message');
+    const profileButton = document.getElementById('edit-profile');
 
     
     async function registrar(dados) {
@@ -27,7 +29,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    button.addEventListener('click', function () {
+    profileButton.addEventListener('click', function() {
+        updMessage.style.visibility = 'visible';
+
+        setTimeout(function() {
+            updMessage.style.visibility = 'hidden';
+        }, 3000);
+    })
+
+    button.addEventListener('click', function() {
         event.preventDefault();
         
         checkForm();
@@ -52,11 +62,9 @@ function checkInputUsername() {
 
     if (usernameValue === "") {
         errorInput(username, "Preencha este campo!");
-        return false;
     } else {
         const formItem = username.parentElement;
         formItem.className = "input-box"
-        return true;
     }
 
 }
@@ -66,11 +74,9 @@ function checkInputEmail() {
 
     if (emailValue === "") {
         errorInput(email, "Preencha este campo!");
-        return false;
     } else {
         const formItem = email.parentElement;
         formItem.className = "input-box"
-        return true;
     }
 }
 
@@ -79,14 +85,11 @@ function checkInputPassword() {
 
     if (passwordValue === "") {
         errorInput(password, "Preencha este campo!");
-        return false;
     } else if (passwordValue.length < 8) {
         errorInput(password, "No mínimo 8 caracteres!");
-        return false;
     } else {
         const formItem = password.parentElement;
         formItem.className = "input-box"
-        return true;
     }
 }
 
@@ -116,20 +119,19 @@ function checkForm() {
     if (isValid) {
         const valoresSelecionados = getSelectedValues(turmas);
 
-        if (allInputValid) {
-            alert("Formulário enviado com sucesso!");
+        alert("Formulário enviado com sucesso!");
 
-            const RegisterData = {
-                nome: username.value,
-                email: email.value,
-                senha: password.value,
-                materia: subject.value,
-                turmas: valoresSelecionados
-            }
-
-            registrar(RegisterData);
-
+        const RegisterData = {
+            nome: username.value,
+            email: email.value,
+            senha: password.value,
+            materia: subject.value,
+            turmas: valoresSelecionados
         }
+
+        registrar(RegisterData);
+
+
     }
 }
 

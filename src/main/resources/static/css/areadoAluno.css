@@ -41,7 +41,7 @@ form {
     width: 100%;
     height: 100%;
     background-color: #E9DBCE;
-    border: 2px solid #CCC7C1;
+    border: 3px solid #CCC7C1;
     padding: 7px;
     color: #4D3C2C;
     font-size: 14px;
@@ -65,7 +65,7 @@ select {
 
 fieldset {
     height: 100%;
-    border: 2px solid #CCC7C1;
+    border: 3px solid #CCC7C1;
 }
 
 label {
@@ -78,6 +78,7 @@ h1 {
     color: #4D3C2C;
     text-align: center;
     font-size: 40px;
+    -webkit-text-stroke-width: 1px;
 }
 
 button {
@@ -85,17 +86,20 @@ button {
     padding: 12px;
     margin-top: 15px;
     background-color: #4D3C2C;
-    color: #ffffff;
-    border: 2px solid #251d16;
+    color: #D5C0AD;
+    border: 3px solid #251d16;
     cursor: pointer;
+    font-size: 16px;
     font-weight: 500;
+    transition: transform 0.3s ease-in-out;
 }
 
 button:hover {
     background-color: #271e16;
-    border: 2px solid #000000;
+    border: 3px solid #000000;
     color: #ffffff;
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
+    transform: scale(1.02);
 }
 
 .input-box a {
