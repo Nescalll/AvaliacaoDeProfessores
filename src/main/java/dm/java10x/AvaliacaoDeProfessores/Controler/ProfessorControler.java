@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/professor")
@@ -38,8 +39,8 @@ public class ProfessorControler {
     }
 
     @GetMapping("/comentario/{id}")
-    public ResponseEntity<List<String>> buscarComentarioPorId(@PathVariable Long id){
-        List<String> comentario = professorService.buscarComentariosPeloId(id);
-        return ResponseEntity.ok().body(comentario);
+    public ResponseEntity<?> buscarComentarioPorId(@PathVariable Long id){
+        Map<Long, String> comentarios = professorService.buscarComentariosPeloId(id);
+        return ResponseEntity.ok().body(comentarios);
     }
 }

@@ -144,12 +144,12 @@ public class ProfessorService {
         }
     }
 
-    public List<String> buscarComentariosPeloId(Long id){
+    public Map<Long, String> buscarComentariosPeloId(Long id){
         ProfessorModel professor = findById(id);
         List<AvaliacaoModel> avaliacoes = avaliacaoRepository.findByProfessorModel(professor);
-        List<String> comentarios = new ArrayList<>();
+        Map<Long, String> comentarios = new HashMap<>();
         for (AvaliacaoModel avaliacao: avaliacoes){
-            comentarios.add(avaliacao.getAulaModel().getComentario());
+            comentarios.put(avaliacao.getAulaModel().getId() ,avaliacao.getAulaModel().getComentario());
         }
         return comentarios;
     }
