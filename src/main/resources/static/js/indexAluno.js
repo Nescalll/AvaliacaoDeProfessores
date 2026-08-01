@@ -161,6 +161,12 @@ document.addEventListener('DOMContentLoaded', function() {
         divProfessores.innerHTML = "";
         for(let i = pagina; i < pagina + 8; i ++){
                 let professor = listaProfessores[i]
+                if(!professor){
+                    numeroDaPagina.innerHTML = " "
+                    numeroDaPagina.innerHTML = `${paginaAtual}`
+                    adicionarEventosAosProfessores(); 
+                    break;
+                }
                 divProfessores.innerHTML += `
                     <div class="professor" data-id="${professor.id}">
                         <p>${professor.nome}</p>
@@ -224,8 +230,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const token = getCookie('auth_token');
         const paginaAtual = document.getElementById("numeroDaPagina");
         let valor = Number(paginaAtual.textContent);
-        let quantProfessores = professores.length / 8;
-        if(valor  < Math.trunc(listaProfessores.length / 8)){
+        let quantProfessores = listaProfessores.length / 8;
+        if(valor  < Math.trunc(quantProfessores + 1)){
             valor ++;
             paginar(valor);
         }
@@ -234,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function() {
     botaoAnterior.addEventListener('click', function(){
         const paginaAtual = document.getElementById("numeroDaPagina");
         let valor = Number(paginaAtual.textContent);
-        console.log(valor)
         if(valor > 1){
             valor --;
             paginar(valor);
