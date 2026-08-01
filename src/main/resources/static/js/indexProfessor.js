@@ -117,6 +117,35 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    async function reportarComentario(id, token) {
+        try {
+            console.log('Reportando comentário com ID:', id);
+            const response = await fetch(`http://localhost:8082/professor/comentario/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.status === 401 || response.status === 403) {
+                console.log('Token inválido ou expirado');
+                return null;
+            }
+            
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+            
+            if (response.ok) {
+                alert('Comentário reportado com sucesso!');
+            }
+        } catch (error) {
+            console.error('Erro ao buscar média:', error);
+            return null;
+        }
+    }
+
     // Função para verificar token no backend (opcional)
     async function verificarToken(token) {
         try {
@@ -157,14 +186,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }   
 
         if (comentarioElement && comentario !== null) {
-            for (let i = 0; i < comentario.length; i++) {
-
+            for (let [chave, valor] of Object.entries(comentario)) {
+                console.log('Comentário:', valor);
                 const comentarioDiv = document.createElement('div');
                 comentarioDiv.classList.add('comentario');
-                comentarioDiv.innerHTML = `<p>${comentario[i]}</p>
-                <button class="btn-reportar" id="btn-reportar-${i}">Reportar</button>`;
+                comentarioDiv.innerHTML = `<p>${valor}</p>
+                <button class="btn-reportar" id="${chave}">Reportar</button>`;
                 comentarioElement.appendChild(comentarioDiv);
             }
+            adicionarEventoAoBotaoReportar();
         } else if (comentarioElement) {
             comentarioElement.innerHTML = '<p>Nenhum comentário disponível</p>';
         }
@@ -210,12 +240,22 @@ document.addEventListener('DOMContentLoaded', function() {
         // Exibir dados na tela
         exibirDadosProfessor(professor, media, comentarios);
     }
+
+    function adicionarEventoAoBotaoReportar() {
+        const comentariosContainer = document.querySelectorAll('.btn-reportar');
+        comentariosContainer.forEach(button => {
+            button.addEventListener('click', function() {
+                const comentarioId = this.id;
+                reportarComentario(comentarioId, token);
+            });
+        });
+    }
     
     // Função para fazer logout
     function logout() {
         console.log('Realizando logout...');
         deleteAllCookies();
-        //window.location.href = 'loginProfessor.html';
+        window.location.href = 'loginProfessor.html';
     }
     
     // Verifica autenticação e carrega dados
