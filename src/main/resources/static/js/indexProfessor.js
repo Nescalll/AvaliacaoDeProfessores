@@ -89,6 +89,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    async function buscarComentariosProfessor(id, token) {
+        try {
+            const response = await fetch(`http://localhost:8082/professor/comentario/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.status === 401 || response.status === 403) {
+                console.log('Token inválido ou expirado');
+                logout();
+                return null;
+            }
+            
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+            
+            const media = await response.json();
+            return media;
+        } catch (error) {
+            console.error('Erro ao buscar média:', error);
+            return null;
+        }
+    }
+
     // Função para verificar token no backend (opcional)
     async function verificarToken(token) {
         try {
@@ -108,14 +136,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Função para exibir os dados na tela
-    function exibirDadosProfessor(professor, comentario) {
+    function exibirDadosProfessor(professor, nota, comentario) {
         // Exibe o nome do professor
-        const nomeElement = document.querySelector('#nomeProfessor');
+        const nomeElement = document.getElementById('nomeProfessor');
+        const notaElement = document.getElementById('notaValor');
+        const comentarioElement = document.getElementById('comentarios');
+
         if (nomeElement && professor.nome) {
             nomeElement.textContent = professor.nome;
         }
          else if (notaElement) {
             notaElement.textContent = 'Aguardando avaliações';
+        }
+
+        // Exibe a nota do professor
+        if (notaElement && nota !== null) {
+            notaElement.textContent = nota.toFixed(2);
+        } else if (notaElement) {
+            notaElement.textContent = 'Aguardando avaliações';
+        }   
+
+        if (comentarioElement && comentario !== null) {
+            for (let i = 0; i < comentario.length; i++) {
+
+                const comentarioDiv = document.createElement('div');
+                comentarioDiv.classList.add('comentario');
+                comentarioDiv.innerHTML = `<p>${comentario[i]}</p>
+                <button class="btn-reportar" id="btn-reportar-${i}">Reportar</button>`;
+                comentarioElement.appendChild(comentarioDiv);
+            }
+        } else if (comentarioElement) {
+            comentarioElement.innerHTML = '<p>Nenhum comentário disponível</p>';
         }
     }
     
@@ -153,12 +204,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const media = await buscarMediaProfessor(professor.id, token);
         console.log('Média do professor:', media);
 
-        // Buscar adjetivo do professor
-        const adjetivo = await buscarModaDeAdjetivo(professor.id, token);
-        console.log('Adjetivo do professor:', adjetivo);
-        
+        const comentarios = await buscarComentariosProfessor(professor.id, token);
+        console.log('Comentários do professor:', comentarios);
+
         // Exibir dados na tela
-        exibirDadosProfessor(professor, media, adjetivo);
+        exibirDadosProfessor(professor, media, comentarios);
     }
     
     // Função para fazer logout
