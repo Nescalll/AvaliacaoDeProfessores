@@ -1,17 +1,16 @@
 package dm.java10x.AvaliacaoDeProfessores.service;
 
 import dm.java10x.AvaliacaoDeProfessores.dto.ProfessorUpdateDTO;
+import dm.java10x.AvaliacaoDeProfessores.enumeradores.TipoDaNotificacao;
 import dm.java10x.AvaliacaoDeProfessores.enumeradores.Turma;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.AvaliacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.Image;
+import dm.java10x.AvaliacaoDeProfessores.model.abstracte.NotificacaoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.abstracte.TurmaModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AlunoModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.AulaModel;
 import dm.java10x.AvaliacaoDeProfessores.model.entity.ProfessorModel;
-import dm.java10x.AvaliacaoDeProfessores.repository.AvaliacaoRepository;
-import dm.java10x.AvaliacaoDeProfessores.repository.ImageRepository;
-import dm.java10x.AvaliacaoDeProfessores.repository.ProfessorRepository;
-import dm.java10x.AvaliacaoDeProfessores.repository.TurmaRepository;
+import dm.java10x.AvaliacaoDeProfessores.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +30,9 @@ public class ProfessorService {
     private AvaliacaoRepository avaliacaoRepository;
 
     @Autowired
+    private AulaRepository aulaRepository;
+
+    @Autowired
     private ProfessorRepository professorRepository;
 
     @Autowired
@@ -38,6 +40,9 @@ public class ProfessorService {
 
     @Autowired
     private ImageRepository image;
+
+    @Autowired
+    private NotificacaoService notificacaoService;
 
     public List<ProfessorModel> findAll(){
         return professorRepository.findAll();
@@ -118,6 +123,14 @@ public class ProfessorService {
                 listaDeProfessores.add(turminha.getProfessorModel());}
         }
         return listaDeProfessores;
+    }
+
+    public void reportarComentariosPeloId(Long id){
+        Optional<AulaModel> aula = aulaRepository.findById(id);
+        if (aula.isPresent()){
+            NotificacaoModel notificacaoModel = new NotificacaoModel(TipoDaNotificacao.BLOQUIO_DE_PALAVRA, aula.get().getId(), "Comentario inapropriado");
+            notificacaoService.creat(notificacaoModel);
+        }
     }
 
     public List<ProfessorModel> filtrarProfessoresNaoAvaliadosEstaSemana(List<ProfessorModel> professores, AlunoModel aluno){

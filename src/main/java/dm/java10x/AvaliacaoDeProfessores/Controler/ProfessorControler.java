@@ -43,4 +43,10 @@ public class ProfessorControler {
         Map<Long, String> comentarios = professorService.buscarComentariosPeloId(id);
         return ResponseEntity.ok().body(comentarios);
     }
+
+    @PostMapping("/comentario/{id}")
+    public ResponseEntity<?> denunciarComentarioPorId(@PathVariable Long id){
+        professorService.reportarComentariosPeloId(id);
+        return ResponseEntity.ok().body("Comentario denunciado para os adiministradores");
+    }
 }
