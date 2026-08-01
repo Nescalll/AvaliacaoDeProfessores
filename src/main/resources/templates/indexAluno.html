@@ -8,7 +8,17 @@
 </head>
 <body>
     <div id="professores">
-        
+        <div id="titulo">
+            <p>Professores</p>
+        </div>
+        <div id="allProfessor">
+
+        </div>
+        <div id="paginacao">
+            <button id="anterior" class="paginar"> < </button>
+            <span id="numeroDaPagina"></span>
+            <button id="proximo" class="paginar"> > </button>
+        </div>
     </div>
 
     <div id="AvaliarAula">
@@ -17,25 +27,31 @@
                 <h2>A nota desse professor é:</h2>
             </div>
             <div class="opcoes">
-                <div id="nota-1" class="nota">1</div>
-                <div id="nota-2" class="nota">2</div>
-                <div id="nota-3" class="nota">3</div>
-                <div id="nota-4" class="nota">4</div>
-                <div id="nota-5" class="nota">5</div>
-                <div id="nota-6" class="nota">6</div>
-                <div id="nota-7" class="nota">7</div>
-                <div id="nota-8" class="nota">8</div>
-                <div id="nota-9" class="nota">9</div>
-                <div id="nota-10" class="nota">10</div>
+                <div class="notas">
+                    <div id="nota-1" class="nota nota-1">1</div>
+                    <div id="nota-2" class="nota nota-2">2</div>
+                    <div id="nota-3" class="nota nota-3">3</div>
+                    <div id="nota-4" class="nota nota-4">4</div>
+                    <div id="nota-5" class="nota nota-5">5</div>
+                </div> 
+                <div class="notas">
+                    <div id="nota-6" class="nota nota-6">6</div>
+                    <div id="nota-7" class="nota nota-7">7</div>
+                    <div id="nota-8" class="nota nota-8">8</div>
+                    <div id="nota-9" class="nota nota-9">9</div>
+                    <div id="nota-10" class="nota nota-10">10</div>
+                </div>
             </div>
         </div>
         <div id="comentario"> 
             <div class="titulo">
                 <h2>Deixe um comentário:</h2>
             </div>
-            <input type="text">
+            <div id="enviarComentario">
+                <input type="text" id="comentarioInput">
+            </div>
         </div>
-        <div id="btn-avaliar">
+        <div id="avaliar">
             <button type="submit" id="btn-avaliar">Avaliar</button>
         </div>
     </div>

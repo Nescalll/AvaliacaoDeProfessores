@@ -56,7 +56,7 @@ function checkForm() {
             senha:password.value
         }
 
-        /*registrar(RegisterData);*/ //Falta o sistema de registro
+        
     }
 }
 

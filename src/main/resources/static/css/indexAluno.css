@@ -34,10 +34,15 @@ body{
     background-size: contain;
 }
 
+#titulo{
+    background-color: rgb(80, 80, 80);
+    color: aliceblue;
+}
+
 #nota{
     align-items: center;
     justify-content: center;
-    margin: 100px;
+    margin: 50px 100px;
 }
 
 #comentario{
@@ -45,18 +50,25 @@ body{
     justify-content: center;
     margin: 10px;
 }
+
+.notas{
+    display: flex;
+    flex-direction: row;
+}
+
 .nota{
     display: flex;
+    flex-direction: row;
     width: 50px;
     height: 50px;
-    border-width: 2px;
     border-radius: 50px;
-    border-style: solid;
     padding: 10px 20px;
-    margin: 5px;
+    margin: 10px 20px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    color: aliceblue;
+    transition: box-shadow 1s ease;
     transition: background-color 1s ease;
 }
 
@@ -77,7 +89,7 @@ body{
 
 .opcoes{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -90,6 +102,27 @@ body{
     transition: background-color 1s ease;
 }
 
+.selecionadaNota{
+    display: flex;
+    flex-direction: row;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    padding: 10px 20px;
+    margin: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: black;
+}
+
+#titulo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-size: 20px;
+}
 #deslogar{
     position: absolute;
     bottom: 10px;
@@ -102,7 +135,7 @@ h2{
     margin-bottom: 20px;
 }
 
-button{
+#btn-avaliar, #logout{
     cursor: pointer;
     color: black;
     padding: 10px 20px;
@@ -111,50 +144,79 @@ button{
     font-size: 16px;
 }
 
-#nota-1{
+input{
+   height: 60px;
+   width: 500px;
+}
+
+#paginacao{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    bottom: 1px;
+    left: 10px;
+}
+
+
+
+.paginar{
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    display:  flex;
+    flex-direction: row;
+    border-radius: 10px;
+    height: 50px;
+    width: 50px;
+}
+
+#enviarComentario{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nota-1{
     background-color: red;
+    box-shadow: 5px 5px rgb(100, 0, 0);
 }
-#nota-2{
+.nota-2{
     background-color: green;
+    box-shadow: 5px 5px rgb(0, 51, 0);
 }
-#nota-3{
-    background-color: blue;
+.nota-3{
+    background-color: rgb(59, 59, 255);
+    box-shadow: 5px 5px rgb(0, 0, 100);
 }
-#nota-4{
-    background-color: yellow;
+.nota-4{
+    background-color: rgb(255, 208, 0);
+    box-shadow: 5px 5px rgb(100, 100, 0);
 }
-#nota-5{
+.nota-5{
     background-color: purple;
+    box-shadow: 5px 5px rgb(34, 0, 34);
 }
-#nota-6{
+.nota-6{
     background-color: orange;
+    box-shadow: 5px 5px rgb(90, 59, 0);
 }
-#nota-7{
-    background-color: pink;
+.nota-7{
+    background-color: rgb(207, 155, 164);
+    box-shadow: 5px 5px rgb(122, 91, 96);
 }
-#nota-8{
+.nota-8{
     background-color: brown;
+    box-shadow: 5px 5px rgb(58, 14, 14);
 }
-#nota-9{
+.nota-9{
     background-color: gray;
+    box-shadow: 5px 5px rgb(59, 59, 59);
 }
-#nota-10{
+.nota-10{
     background-color:burlywood;
+    box-shadow: 5px 5px rgb(107, 89, 65);
 }
 
-#comentario-1{
-    background-color: red;
-}
-#comentario-2{
-    background-color: green;
-}
-#comentario-3{
-    background-color: blue;
-}
-#comentario-4{
-    background-color: yellow;
-}
-#comentario-5{
-    background-color: purple;
-}
-
+.selecionadaNota{
+    background-color: black;
+    box-shadow: 5px 5px rgb(37, 37, 37);}

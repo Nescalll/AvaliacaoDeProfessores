@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface TurmaRepository extends JpaRepository<TurmaModel, Long> {
 
-    // Busca pelo número (SMALLINT)
+
     @Query("SELECT t FROM TurmaModel t WHERE t.turma = :turmaNumero")
     List<TurmaModel> findTurmaModelByTurmaNumero(@Param("turmaNumero") Integer turmaNumero);
 
-    // Busca pelo Enum (se usar ORDINAL)
     @Query("SELECT t FROM TurmaModel t WHERE t.turma = :turma")
     List<TurmaModel> findTurmaModelByTurma(@Param("turma") Turma turma);
+
     List<ProfessorModel> findProfessorModelByTurma(Turma turma);
 
     void deleteByProfessorModel(ProfessorModel professor);

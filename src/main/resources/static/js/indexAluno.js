@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function logout() {
         console.log('Realizando logout...');
         deleteAllCookies();
-        //window.location.href = 'loginAluno.html';
+        window.location.href = 'loginAluno.html';
     }
 
     async function receberProfessores(token) {
@@ -99,9 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return resultado;
     }
-
-    // Função para armazenar os professores em uma variável global
-    let listaProfessores = [];
+    
 
     async function carregarProfessores(token) {
         try {
@@ -110,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const divProfessores = document.getElementById('professores');
             
+            //Adicionar limite de professores
+            
+
             if (!dadosDeProfessores || dadosDeProfessores.length === 0) {
                 divProfessores.innerHTML = `
                     <div class="professor">
@@ -119,20 +120,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            divProfessores.innerHTML = '';
+            //Paginação: 
             
-            // CORREÇÃO: Adiciona o ID como atributo data-id
+            if(dadosDeProfessores.length > 8){
+                paginar(1);
+                console.log("Professores feitos");
+            } else {
+                console.log("Entrou");
             dadosDeProfessores.forEach(({ nome, id }) => {
                 divProfessores.innerHTML += `
                     <div class="professor" data-id="${id}">
                         <p>${nome}</p>
                     </div>
                 `;
+            document.getElementById('paginacao').innerHTML = " ";
+            adicionarEventosAosProfessores(); 
             });
-            
-            // Adiciona eventos após criar os elementos
-            adicionarEventosAosProfessores();
-            
+        }
+
+        
+        return listaProfessores;  
+
         } catch (erro) {
             console.error('Erro ao carregar professores:', erro);
             const divProfessores = document.getElementById('professores');
@@ -142,6 +150,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }
+    }
+
+    function paginar(paginaAtual) {
+        const divProfessores = document.getElementById('allProfessor');
+        const numeroDaPagina = document.getElementById('numeroDaPagina');
+
+        
+        pagina = (paginaAtual - 1) * 8;
+        divProfessores.innerHTML = "";
+        for(let i = pagina; i < pagina + 8; i ++){
+                let professor = listaProfessores[i]
+                divProfessores.innerHTML += `
+                    <div class="professor" data-id="${professor.id}">
+                        <p>${professor.nome}</p>
+                    </div>`;
+            }
+            numeroDaPagina.innerHTML = " "
+            numeroDaPagina.innerHTML = `${paginaAtual}`
+            adicionarEventosAosProfessores(); 
     }
 
     // Função para adicionar eventos aos professores
@@ -166,18 +193,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Verifica se o token existe
+    let listaProfessores = [];
+
+
     const token = getCookie('auth_token');
-    
     if (!token) {
         console.log('Token não encontrado. Redirecionando para login...');
         window.location.href = 'loginAluno.html';
     } else {
         console.log('Usuário autenticado com sucesso!');
         carregarProfessores(token);
+        let professores = receberProfessores(token);
     }
 
-    // Adiciona evento ao botão de deslogar
     const logoutButton = document.querySelector('button[id="logout"]');
     if (logoutButton) {
         logoutButton.addEventListener('click', function(event) {
@@ -188,9 +216,34 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('Botão de logout não encontrado');
     }
 
-    // Adicionar evento de clique para cada nota
+    const botaoProx = document.querySelector('#proximo');
+    const botaoAnterior = document.querySelector('#anterior');
+
+
+    botaoProx.addEventListener('click', function(){
+        const token = getCookie('auth_token');
+        const paginaAtual = document.getElementById("numeroDaPagina");
+        let valor = Number(paginaAtual.textContent);
+        let quantProfessores = professores.length / 8;
+        if(valor  < Math.trunc(listaProfessores.length / 8)){
+            valor ++;
+            paginar(valor);
+        }
+    });
+
+    botaoAnterior.addEventListener('click', function(){
+        const paginaAtual = document.getElementById("numeroDaPagina");
+        let valor = Number(paginaAtual.textContent);
+        console.log(valor)
+        if(valor > 1){
+            valor --;
+            paginar(valor);
+        }
+    });
+
+
     const notas = document.querySelectorAll('.nota');
-    const listaDeCoresDasNotas = ['red', 'green', 'blue', 'yellow', 'purple', 'orange', 'pink', 'brown', 'gray', 'burlywood'];
+
 
     notas.forEach((nota, index) => {
         nota.addEventListener('click', function() {
@@ -198,76 +251,48 @@ document.addEventListener('DOMContentLoaded', function() {
             if (temNotaSelecionada) {
                 const indexNotaSelecionada = Array.from(notas).findIndex(n => n.classList.contains('selecionadaNota'));
                 const notaSelecionada = document.querySelector('.selecionadaNota');
-                notaSelecionada.style.color = "black";
-                notaSelecionada.style.backgroundColor = listaDeCoresDasNotas[indexNotaSelecionada];
                 notaSelecionada.classList.remove('selecionadaNota');
+                notaSelecionada.classList.add(`nota-${indexNotaSelecionada}`);
             }
             
+            nota.classList.remove(`nota-${index}`);
             nota.classList.add('selecionadaNota');
-            nota.style.color = "white";
-            nota.style.backgroundColor = "black";
         });
     });
 
-    const comentarios = document.querySelectorAll('.comentario');
-    const listaDeCoresDosComentarios = ['red', 'green', 'blue', 'yellow', 'purple'];
-    const opcoes = ['OTIMO', 'BOM', 'MEDIO', 'RUIM', 'PESSIMO'];
 
-    comentarios.forEach((comentario, index) => {
-        comentario.addEventListener('click', function() {
-            const temComentarioSelecionado = Array.from(comentarios).some(c => c.classList.contains('selecionadoComentario'));
-            if (temComentarioSelecionado) {
-                const indexComentarioSelecionado = Array.from(comentarios).findIndex(c => c.classList.contains('selecionadoComentario'));
-                const comentarioSelecionado = document.querySelector('.selecionadoComentario');
-                comentarioSelecionado.style.color = "black";
-                comentarioSelecionado.style.backgroundColor = listaDeCoresDosComentarios[indexComentarioSelecionado];
-                comentarioSelecionado.classList.remove('selecionadoComentario');
-            }
 
-            comentario.classList.add('selecionadoComentario');
-            comentario.style.color = "white";
-            comentario.style.backgroundColor = "black";
-        });
-    });
-
-    // BOTÃO AVALIAR - CORRIGIDO PARA PEGAR O ID
     const botao = document.querySelector('#btn-avaliar');
 
     botao.addEventListener('click', function() {
         const professores = document.querySelectorAll('.professor');
-        let temNotaSelecionada = Array.from(notas).some(n => n.classList.contains('selecionadaNota'));
-        let temComentarioSelecionado = Array.from(comentarios).some(c => c.classList.contains('selecionadoComentario'));
+        const comentario = document.querySelector('#comentarioInput');
+        const nota = document.querySelectorAll('.nota')
+        let temNotaSelecionada = Array.from(nota).some(n => n.classList.contains('selecionadaNota'));
         let temProfessorSelecionado = Array.from(professores).some(p => p.classList.contains('selecionadoProfessor'));
+
         
         if (!temNotaSelecionada) {
             window.alert("Nota não foi selecionada");
-        } else if (!temComentarioSelecionado) {
-            window.alert("Comentário não foi selecionado");
-        } else if (!temProfessorSelecionado) {
+        }  else if (!temProfessorSelecionado) {
             window.alert("Professor não foi selecionado");
         } else {
             const notaSelecionada = Array.from(notas).findIndex(n => n.classList.contains('selecionadaNota'));
-            const comentarioSelecionado = Array.from(comentarios).findIndex(c => c.classList.contains('selecionadoComentario'));
-            
-            // CORREÇÃO: Pega o ID do professor selecionado
+
             const professorSelecionado = document.querySelector('.selecionadoProfessor');
             const professorId = professorSelecionado ? professorSelecionado.dataset.id : null;
             
-            // Pega o nome do professor (opcional)
-            const professorNome = professorSelecionado ? professorSelecionado.querySelector('p').textContent : null;
             
             console.log("Tudo concluído!");
             console.log(`Professor ID: ${professorId}`);
-            console.log(`Professor Nome: ${professorNome}`);
             console.log(`Nota: ${notaSelecionada + 1}`);
-            console.log(`Comentário: ${opcoes[comentarioSelecionado]}`);
+            console.log(`Comentario: ${comentario.value}`);
             
-            // Aqui você pode enviar os dados para o servidor
             const dadosAvaliacao = {
                 id_professor: professorId,
                 email: getCookie('user_email'),
                 nota: notaSelecionada + 1,
-                adjetivo: opcoes[comentarioSelecionado]
+                comentario: comentario.value
             };
             enviarAvaliacao(dadosAvaliacao, token);
             console.log('Dados da avaliação:', dadosAvaliacao);
