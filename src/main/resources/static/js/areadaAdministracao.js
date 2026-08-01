@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function logout() {
         console.log("Realizando logout...");
-        window.location.href = '#';
+        window.location.href = 'loginProfessor.html';
     }
 
     const logoutButton = document.getElementById("logout");

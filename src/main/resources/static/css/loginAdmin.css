@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sanchez:ital@0;1&display=swap');
 
+@font-face {
+    font-family: 'Typewriter-Black';
+    src: url(../../../../../fontes/font1\ -\ jmh_typewriter/Typewriter-Black.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Drunken-Hour';
+    src: url(../../../../../fontes/font2\ -\ drunken-hour/drunkenhourDEMO.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Minecrafter';
+    src: url(../../../../../fontes/font3\ -\ minecraft/minecraft_font.ttf) format('truetype');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +23,7 @@
 }
 
 body {
-    background-color: #4D3C2C;
+    background: url(../img/backgroundAzulListrado.jpeg);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +36,7 @@ body {
 }
 
 h1 {
-    color: #eeeee4;
+    color: #FFFEFF;
     margin-bottom: 5px;
     text-align: center;
     font-size: 40px;
@@ -29,10 +44,10 @@ h1 {
 }
 
 form {
-    background-color: #eeeee4;
-    height: 400px;
+    background-color: #CDC9C0;
+    height: 330px;
     padding: 30px 35px;
-    border-radius: 50px;
+    border-radius: 20px;
     box-shadow: 0 5px 0 -1px;
 }
 
@@ -46,17 +61,17 @@ img {
 .input-box {
     width: 100%;
     height: 45px;
-    margin: 10px 0;
-    background-color: #E9DBCE;
+    margin: 30px 0;
+    background-color: #ffffff;
 }
 
 .input-box input {
     width: 100%;
     height: 100%;
-    background-color: #E9DBCE;
-    border: 3px solid #CCC7C1;
+    background-color: #ffffff;
+    border: 3px solid #D6D5D1;
     padding: 7px;
-    color: #4D3C2C;
+    color: #000000;
     font-size: 14px;
     outline: none;
 }
@@ -64,10 +79,10 @@ img {
 button {
     width: 100%;
     padding: 12px;
-    margin-top: 15px;
-    background-color: #4D3C2C;
-    color: #D5C0AD;
-    border: 3px solid #251d16;
+    margin-top: 10px;
+    background-color: #14167D;
+    color: #F8FCFF;
+    border: 3px solid #D8D7DD;
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
@@ -75,9 +90,9 @@ button {
 }
 
 button:hover {
-    background-color: #271e16;
-    border: 3px solid #000000;
-    color: #ffffff;
+    background-color: #110F70;
+    border: 3px solid #A8A7C6;
+    color: #F8FCFF;
     transition: 0.3s ease-in-out;
     transform: scale(1.02);
 }
@@ -87,7 +102,7 @@ button:hover {
     justify-content: center;
     margin-top: 7px;
     text-decoration: none;
-    color: #4D3C2C;
+    color: #000000;
     font-size: 17px;
     font-weight: 500;
 }
@@ -106,16 +121,16 @@ button:hover {
     width: 100%;
     height: 45px;
     margin: 30px 0;
-    background-color: #E9DBCE;
+    background-color: #ffffff;
 }
 
 .input-box-error input {
     width: 100%;
     height: 100%;
-    background-color: #E9DBCE;
+    background-color: #ffffff;
     border: 3px solid #FF3B25;
     padding: 7px;
-    color: #4D3C2C;
+    color: #000000;
     font-size: 14px;
     outline: none;
 }
@@ -125,18 +140,4 @@ button:hover {
     bottom: -2px;
     visibility: visible;
     color: #FF3B25;
-}
-
-.particulas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.5;
-    background: 
-    radial-gradient(circle at 10% 20%, #d89d65 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, #88470ee1 0%, transparent 20%),
-    #271e16;
 }
