@@ -39,6 +39,10 @@ body{
     color: aliceblue;
 }
 
+#numeroDaPagina{
+    align-self: center;
+}
+
 #nota{
     align-items: center;
     justify-content: center;
@@ -153,8 +157,8 @@ input{
     display: flex;
     flex-direction: row;
     position: relative;
-    bottom: 1px;
-    left: 10px;
+    margin-left: 25px;
+    
 }
 
 
@@ -162,7 +166,7 @@ input{
 .paginar{
     align-items: center;
     justify-content: center;
-    margin: 5px;
+    margin: 20px;
     display:  flex;
     flex-direction: row;
     border-radius: 10px;
