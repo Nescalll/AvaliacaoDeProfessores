@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sanchez:ital@0;1&display=swap');
 
+@font-face {
+    font-family: 'Typewriter';
+    src: url(../../../../../fontes/font1\ -\ jmh_typewriter/JMHTypewriter.ttf) format('truetype'),
+        url(../../../../../fontes/font1\ -\ jmh_typewriter/JMHTypewriter.otf) format('opentype');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -12,32 +18,47 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: white;
+    background: url(../img/backgroundAzulListrado.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .notification {
     position: fixed;
     top: 20px;
     right: 40px;
-    background-color: #bfddfb;
+    background-color: #000000;
     color: white;
     padding: 15px;
     border-radius: 40px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
+    width: 55px;
+    height: 55px;
+    border: 2px solid #FFFEFF;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 25px;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.5s ease;
 }
 
 .notification:hover {
-    transform: scale(1.1);
+    background-color: #FFFEFF;
+    border: 2px solid #000000;
+    transition: 0.5s ease;
+}
+
+.notification i {
+    color: #FFFEFF;
+    transition: 0.5s ease;
+}
+
+.notification:hover i {
+    transform: scale(1.2);
+    color: #000000;
 }
 
 .professor-registro {
@@ -58,18 +79,43 @@ body {
     padding-left: 50px;
 }
 
-input {
+.professor #professor {
+    background-color: #102969;
+    color: #FFFEFF;
+    box-shadow: 3px 15px 0 3px #030D42;
+}
+
+.professor #professor:hover {
+    background-color: #051550;
+    box-shadow: 3px 15px 0 3px #030A3E;
+}
+
+.registro #registro {
+    background-color: #F86307;
+    color: #FFFEFF;
+    box-shadow: 3px 15px 0 3px #883708;
+}
+
+.registro #registro:hover {
+    background-color: #E75C09;
+    box-shadow: 3px 15px 0 3px #7F3506;
+}
+
+#professor, #registro {
+    font-family: 'Typewriter';
+    -webkit-text-stroke-width: 1px;
     width: 100%;
     height: 100%;
-    font-size: 16px;
-    border: 1px solid black;
+    font-size: 22px;
+    letter-spacing: 4px;
+    border: none;
     border-radius: 10px;
     background-color: #bfddfb;
+    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-input:hover {
-    cursor: pointer;
+#professor:hover, #registro:hover {
     transform: scale(1.05);
 }
 
@@ -79,16 +125,178 @@ input:hover {
     right: 50px;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #bfddfb;
-    border: 2px solid black;
+#logout {
+    font-family: 'Typewriter';
+    -webkit-text-stroke-width: 1px;
+    padding: 10px 25px;
+    background-color: #D83633;
+    color: #FFFEFF;
+    box-shadow: 4px 7px 0 #6A1A19;
+    border: none;
     border-radius: 30px;
     font-size: 15px;
+    letter-spacing: 2px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
 
-button:hover {
+#logout:hover {
     transform: scale(1.1);
+    background-color: #A92928;
+    box-shadow: 4px 7px 0 #671813;
+}
+
+.prof-acess {
+    background-color: rgb(0 0 0 / 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#professor-container {
+    width: 50rem;
+    margin: 3rem auto 0;
+    background-color: #fdfdfd;
+    padding: 1.5rem;
+    border-radius: 15px;
+}
+
+.regi-acess {
+    background-color: rgb(0 0 0 / 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.regi-acess button {
+    background-color: #fdfdfd;
+    color: #102f5e;
+    border: 2px solid #102f5e;
+    padding: 0.3rem 0.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+
+.regi-acess button:hover {
+    background-color: #102f5e;
+}
+
+.regi-acess button:hover > i {
+    color: #fff;
+}
+
+.regi-acess button i {
+    color: #102f5e;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.regi-acess input, select {
+    padding: 0.25rem 0.5rem;
+}
+
+#registro-container {
+    width: 50rem;
+    margin: 3rem auto 0;
+    background-color: #fdfdfd;
+    padding: 1.5rem;
+    border-radius: 15px;
+}
+
+#toolbar {
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+}
+
+#toolbar h4 {
+    margin-bottom: 0.5rem;
+}
+
+#search {
+    border-right: 1px solid #ddd;
+    padding-right: 1rem;
+    margin-right: 1rem;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+#search form {
+    display: flex;
+}
+
+#search input {
+    width: 100%;
+    margin-right: 0.3rem;
+}
+
+#filter {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+}
+
+#filter select {
+    flex: 1;
+}
+
+#all-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+#all-list p {
+    flex: 1;
+    font-size: 1rem;
+}
+
+#all-list button {
+    margin-left: 0.4rem;
+}
+
+.noti-acess {
+    background-color: rgb(0 0 0 / 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#notification-container {
+    width: 35rem;
+    margin: 3rem auto 0;
+    background-color: #fdfdfd;
+    padding: 1.5rem;
+    border-radius: 15px;
+}
+
+/* Pode apagar quando quiser; só pela estética. */
+h2 {
+    text-align: center;
 }

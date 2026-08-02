@@ -1,8 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Sanchez:ital@0;1&display=swap');
 
 @font-face {
-    font-family: 'Typewriter-Black';
-    src: url(../../../../../fontes/font1\ -\ jmh_typewriter/Typewriter-Black.ttf) format('truetype');
+    font-family: 'Typewriter-Bold';
+    src: url(../../../../../fontes/font1\ -\ jmh_typewriter/JMHTypewriter-Bold.ttf) format('truetype'),
+        url(../../../../../fontes/font1\ -\ jmh_typewriter/JMHTypewriter-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Typewriter';
+    src: url(../../../../../fontes/font1\ -\ jmh_typewriter/JMHTypewriter.ttf) format('truetype'),
+        url(../../../../../fontes/font1\ -\ jmh_typewriter/JMHTypewriter.otf) format('opentype');
 }
 
 @font-face {
@@ -11,8 +18,10 @@
 }
 
 @font-face {
-    font-family: 'Minecrafter';
-    src: url(../../../../../fontes/font3\ -\ minecraft/minecraft_font.ttf) format('truetype');
+    font-family: 'Minecraft';
+    src: url(../../../../../fontes/font3\ -\ minecraft/minecraft.woff2.woff2) format('woff2'),
+        url(../../../../../fontes/font3\ -\ minecraft/minecraft.ttf) format('truetype'),
+        url(../../../../../fontes/font3\ -\ minecraft/minecraft.otf) format('opentype');
 }
 
 * {
@@ -31,22 +40,22 @@ body {
 }
 
 .main-container {
-    width: 580px;
+    width: 600px;
     padding: 30px 40px;
 }
 
 h1 {
+    font-family: 'Minecraft';
     color: #FFFEFF;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     text-align: center;
-    font-size: 40px;
-    -webkit-text-stroke-width: 1px;
+    font-size: 35px;
 }
 
 form {
     background-color: #CDC9C0;
     height: 330px;
-    padding: 30px 35px;
+    padding: 30px 40px;
     border-radius: 20px;
     box-shadow: 0 5px 0 -1px;
 }
@@ -66,6 +75,7 @@ img {
 }
 
 .input-box input {
+    font-family: 'Typewriter';
     width: 100%;
     height: 100%;
     background-color: #ffffff;
@@ -77,6 +87,7 @@ img {
 }
 
 button {
+    font-family: 'Typewriter-Bold';
     width: 100%;
     padding: 12px;
     margin-top: 10px;
@@ -98,12 +109,14 @@ button:hover {
 }
 
 .a-back {
+    font-family: 'Typewriter';
+    -webkit-text-stroke-width: 0.7px;
     display: flex;
     justify-content: center;
     margin-top: 7px;
     text-decoration: none;
     color: #000000;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
 }
 
@@ -125,6 +138,7 @@ button:hover {
 }
 
 .input-box-error input {
+    font-family: 'Typewriter';
     width: 100%;
     height: 100%;
     background-color: #ffffff;
@@ -136,6 +150,7 @@ button:hover {
 }
 
 .input-box-error a {
+    font-family: 'Typewriter-Bold';
     position: relative;
     bottom: -2px;
     visibility: visible;

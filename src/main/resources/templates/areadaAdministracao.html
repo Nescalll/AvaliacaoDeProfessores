@@ -8,17 +8,70 @@
     <title>ÁREA DA ADMINISTRAÇÃO</title>
 </head>
 <body>
-    <div class="notification">
-        <i class="bx bx-bell" style="color:#000000;"></i>
+    <div class="notification" id="notification">
+        <i class="bx bx-bell"></i>
     </div>
 
     <div class="professor-registro">
         <div class="professor">
-            <input type="button" value="Professor">
+            <input type="button" value="Professor" id="professor">
         </div>
 
         <div class="registro">
-            <input type="button" value="Registro">
+            <input type="button" value="Registro" id="registro">
+        </div>
+    </div>
+
+    <div class="prof-acess" id="prof-acess">
+        <div id="professor-container">
+            <!-- Visualizar as avaliações dos professores -->
+             <!-- Brilhe meu garoto! :) -->
+        </div>
+    </div>
+
+    <div class="regi-acess" id="regi-acess">
+        <div id="registro-container">
+            <div id="toolbar">
+                <div id="search">
+                    <h4>Pesquisar:</h4>
+                    <form>
+                        <input type="text" id="search-input" placeholder="Buscar">
+                        <!-- Note que este button é o único do tipo button, pois ele envia dados por padrão; por estar dentro de um form -->
+                        <button type="button" id="erase-button" class="erase-button">
+                            <i class="bx bx-x"></i>
+                        </button>
+                    </form>
+                </div>
+                <div id="filter">
+                    <h4>Filtrar:</h4>
+                    <select id="filter-select">
+                        <option value="Professores">Professores</option>
+                        <option value="Alunos">Alunos</option>
+                        <option value="Administração">Administração</option>
+                    </select>
+                </div>
+            </div>
+            <div id="all-list">
+                <p>Professor: Marcuzinho Forever</p>
+                <button id="aprove-form" class="aprove-form">
+                    <i class="bx bx-check"></i>
+                </button>
+                <button id="see-form" class="see-form">
+                    <i class="bx bx-eye"></i>
+                </button>
+                <button id="deny-form" class="deny-form">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="noti-acess" id="noti-acess">
+        <div id="notification-container">
+            <h2>Notificações</h2>
+            <!-- Notificação Bolada piririmpiririmpiririm -->
+            <!-- Posicione-a onde preferir na tela -->
+            <!-- Quiser mudá-lo em tamanho, cor também... bote quente! -->
         </div>
     </div>
 
